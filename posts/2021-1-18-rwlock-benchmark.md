@@ -1,7 +1,4 @@
----
-layout: post
-title: "Benchmarking Reader-Writer Lock Performance"
----
+## Benchmarking Reader-Writer Lock Performance
 
 This post presents benchmark results for two popular reader-writer lock implementations, and offers some (tentative) explanations for the patterns we observe.
 

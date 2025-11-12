@@ -1,7 +1,4 @@
----
-layout: post
-title: "What has my Standard Library Done for me Lately? - the boolean specialization of std::vector"
----
+## What has my Standard Library Done for me Lately? - the boolean specialization of std::vector
 
 This short post explores the `std::vector<bool>` specialization of `std::vector` in the C++ standard library. Specifically, we look at how the standard library writers achieve a space-optimized implementation without sacrificing (most) of the semantics we expect from standard containers, and why this optimization sometimes leads to unexpected behavior.
 

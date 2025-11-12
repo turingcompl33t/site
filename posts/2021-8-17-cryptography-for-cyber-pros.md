@@ -1,7 +1,4 @@
----
-layout: "post"
-title: "Cryptography for Cybersecurity Professionals"
----
+## Cryptography for Cybersecurity Professionals
 
 This post links a presentation I made back in 2019 titled "Cryptography for Cybersecurity Professionals." I lost track of the presentation in the intervening years, but recently stumbled on it again while auditing my password manager for old, unused accounts. 
 

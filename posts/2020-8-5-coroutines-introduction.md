@@ -1,7 +1,4 @@
----
-layout: post
-title: "Building With C++ Coroutines: Series Introduction"
----
+## Building With C++ Coroutines: Series Introduction
 
 C++20 introduces a number of exciting new features: constraints and concepts, modules, ranges, new primitives in the thread support library, etc. While all of these features are interesting and deserving of study, it is the language support for coroutines that I find the most compelling.
 

@@ -1,7 +1,4 @@
----
-layout: post
-title: "Hacking CPython: Syntax"
----
+## Hacking CPython: Syntax
 
 This post is the first in a series on adding functionality to the CPython interpreter. In it, we implement the almost-equal operator described in [CPython Internals](https://realpython.com/products/cpython-internals-book/). In this first post, we update the CPython tokenizer, parser, and abstract-syntax tree to support our new feature.
 

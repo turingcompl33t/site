@@ -1,7 +1,4 @@
----
-layout: post
-title: "Awaitable System Timers"
----
+## Awaitable System Timers
 
 C++20 coroutines enable many interesting asynchronous programming constructs of their own accord, including `co_await`able synchronization primitives, generator functions, and asynchronous algorithms, to name just a few. However, the power of coroutines really shines when we integrate them with an external event source such as IO completions or timer expirations.
 

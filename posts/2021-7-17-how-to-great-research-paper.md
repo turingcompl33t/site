@@ -1,7 +1,4 @@
----
-layout: post
-title: "How to Write a Great Research Paper"
----
+## How to Write a Great Research Paper
 
 I recently watched the presentation [How to Write a Great Research Paper](https://www.youtube.com/watch?v=VK51E3gHENc) by Simon Peyton Jones. In this post, I summarize some of my primary takeaways from this presentation and augment this with some examples from my own research experience.
 

@@ -1,7 +1,4 @@
----
-layout: post
-title: "Accelerating Map Multi-Lookup with Coroutines"
----
+## Accelerating Map Multi-Lookup with Coroutines
 
 In this post we'll explore an approach to using C++20 coroutines to hide memory stall latency when performing bulk lookup operations on a data structure that exceeds the size of last-level cache.
 

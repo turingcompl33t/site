@@ -1,7 +1,4 @@
----
-layout: post
-title: "Container Deployment on AWS"
----
+## Container Deployment on AWS
 
 This post describes several options for deploying containerized applicatons on AWS and the tradeoffs in terms of usability, scalability, and pricing.
 

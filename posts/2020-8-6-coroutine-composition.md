@@ -1,7 +1,4 @@
----
-layout: post
-title: "Coroutine Composition with Tasks"
----
+## Coroutine Composition with Tasks
 
 This blog post explores the semantics of coroutine composition by examining a simplified implementation of the `task` type.
 
