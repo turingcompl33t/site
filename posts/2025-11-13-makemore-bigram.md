@@ -1,6 +1,6 @@
 ## A Statistical Character Bigram Language Model
 
-We're moving on from the lower-level details of automatic differentiation and gradient descent via backpropagation to start focusing on building models for a more sophisticated purpose: emulation on natural language. We'll build up from a simple statistical bigram model to a modern transformer-based one.
+We're moving on from the lower-level details of automatic differentiation and gradient descent via backpropagation to start focusing on building models for a more sophisticated purpose: emulation of natural language. We'll build up from a simple statistical bigram model to a modern transformer-based one.
 
 The content in this post is based on Andrej Karpathy's [YouTube video](https://www.youtube.com/watch?v=PaCmpygFfXo). The source for his original version of `makemore` is available on [GitHub](https://github.com/karpathy/makemore).
 
@@ -112,11 +112,11 @@ The most common bigram indicates that the character `n` terminates a word `6,763
 
 ### Converting to a Tensor Representation
 
-This dictionary-based representation of the bigram counts data structure is comprehensible but inefficient. We can do better by converting to a tensor representation using a `Tensor` from `pytorch`.
+This dictionary-based representation of the bigram counts data structure is comprehensible but inefficient. We can do better by converting to a tensor representation using a `Tensor` from [`pytorch`](https://pytorch.org/).
 
-The first step to implementing this representation is to support mapping a character to an integer (and back) - we need this to translate between characters and the indices in the tensor that represent them. We achieve this by identifying all of the unique characters in the dataset (our _vocabulary_), and mapping them to an index based on an alphabetical sort. We insert the special `.` token at index `0`.
+The first step towards implementing this representation is to support mapping a character to an integer (and back) - we need this to translate between characters and the indices in the tensor that represent them. We achieve this by identifying all of the unique characters in the dataset (our _vocabulary_), and mapping them to an index based on an alphabetical sort. We insert the special `.` token at index `0`.
 
-Finally, we reverse this mapping such that we map from character to index and from index to character, bidirectionally.
+Finally, we reverse this mapping such that we can map from character to index and from index to character, bidirectionally.
 
 ```python
 # LUT construction
@@ -168,7 +168,7 @@ for i in range(ALPHABET_SIZE):
 plt.axis("off")
 ```
 
-TODO: embed image
+![](matrix.png)
 
 ### Sampling from the Model
 
@@ -184,7 +184,7 @@ p
 # tensor([0.0654, 0.4140, 0.5205])
 ```
 
-We can then use [`torch.multinomial`](https://docs.pytorch.org/docs/stable/generated/torch.multinomial.html) to sample from this probability distribution. This allows us to get an index into the tensor based on the probability assigned to that index - sampling from the multinomial distribution.
+We can then use [`torch.multinomial`](https://docs.pytorch.org/docs/stable/generated/torch.multinomial.html) to sample from this probability distribution. This allows us to get an index into the tensor based on the probability assigned to that index - i.e. sample from the multinomial distribution `p`.
 
 ```python
 samples = torch.multinomial(p, num_samples=32, replacement=True, generator=g)
@@ -204,7 +204,7 @@ props
 # [0.0, 0.4375, 0.5625]
 ```
 
-We can use this same logic to sample a single word from the bigram model. The one optimization we'll make along the way is to pre-normalize the rows of the tensor such that we don't need to repeatedly re-compute the probability distribution.
+We can use this same logic to sample a single word from the bigram model. The one optimization we'll make along the way is to pre-normalize the rows of the tensor such that we don't need to repeatedly re-compute the probability distribution. With `pytorch`, it is a simple matter to perform these row-wise operations, dividing each element a particular row by the sum along that row.
 
 ```python
 # create a copy of bigram counts
