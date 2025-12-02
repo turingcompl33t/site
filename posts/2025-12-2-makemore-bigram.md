@@ -35,7 +35,7 @@ The dataset contains just over 32,000 names.
 
 In our first attempt at "making more," we won't even use machine learning - we'll compute simple statistical properties of the training data and sample from the resulting statistical model.
 
-Specifically, we'll consider _character bigrams_. Considering characters means that we'll look at individual characters, both when training the model and sampling from it to produce new data (this is in contrast to more sophisticated models that might consider higher-level structure, like words). Bigrams means that we will consider just two characters at a time, collecting statistics for the next character based only on the character that immediately precedes it.
+Specifically, we'll consider _character bigrams_. Considering characters means that we'll look at individual characters, both when training the model and sampling from it to produce new data. This is in contrast to more sophisticated models that might consider higher-level structure, like words. Character bigrams are pairs of two characters; our bigram language model will consider just two characters at a time, collecting statistics for the next character based only on the character that immediately precedes it.
 
 We can look at the bigrams provided by a single word:
 
@@ -95,6 +95,8 @@ We can then look at the most common bigrams:
 sorted(bigram_counts.items(), key=lambda p: p[1], reverse=True)[:10]
 ```
 
+The results reveal the 10 most common character bigrams for the entire dataset:
+
 ```bash
 [(('n', '.'), 6763),
  (('a', '.'), 6640),
@@ -108,11 +110,11 @@ sorted(bigram_counts.items(), key=lambda p: p[1], reverse=True)[:10]
  (('.', 'k'), 2963)]
 ```
 
-The most common bigram indicates that the character `n` terminates a word `6,763` times throughout this dataset.
+The most common bigram indicates that the character `n` terminates a word `6,763` times throughout this dataset. Similar, `a` followed by `.` (the end of the word) is the second most common bigram in this dataset, with `6,640` occurrences.
 
 ### Converting to a Tensor Representation
 
-This dictionary-based representation of the bigram counts data structure is comprehensible but inefficient. We can do better by converting to a tensor representation using a `Tensor` from [`pytorch`](https://pytorch.org/).
+This dictionary-based representation of the bigram counts data structure is comprehensible but inefficient. We can do better by converting to a tensor representation using a [`Tensor`](https://docs.pytorch.org/docs/stable/tensors.html) from [`pytorch`](https://pytorch.org/).
 
 The first step towards implementing this representation is to support mapping a character to an integer (and back) - we need this to translate between characters and the indices in the tensor that represent them. We achieve this by identifying all of the unique characters in the dataset (our _vocabulary_), and mapping them to an index based on an alphabetical sort. We insert the special `.` token at index `0`.
 
@@ -168,6 +170,8 @@ for i in range(ALPHABET_SIZE):
 plt.axis("off")
 ```
 
+The resulting figure summarizes the bigram frequency across the entire dataset:
+
 ![](matrix.png)
 
 ### Sampling from the Model
@@ -204,7 +208,7 @@ props
 # [0.0, 0.4375, 0.5625]
 ```
 
-We can use this same logic to sample a single word from the bigram model. The one optimization we'll make along the way is to pre-normalize the rows of the tensor such that we don't need to repeatedly re-compute the probability distribution. With `pytorch`, it is a simple matter to perform these row-wise operations, dividing each element a particular row by the sum along that row.
+We can use this same logic to sample a single word from the bigram model. The one optimization we'll make along the way is to pre-normalize the rows of the tensor such that we don't need to repeatedly re-compute the probability distribution. With `pytorch`, it is a simple matter to perform these row-wise operations, dividing each element in a particular row by the sum along that row.
 
 ```python
 # create a copy of bigram counts
@@ -212,6 +216,8 @@ P = N.float()
 # normalize to probability distribution along rows
 P /= P.sum(1, keepdim=True)
 ```
+
+In Andrej's [original video](https://www.youtube.com/watch?v=PaCmpygFfXo) he includes a great discussion of [broadcasting semantics](https://docs.pytorch.org/docs/stable/notes/broadcasting.html) for PyTorch tensors. It is definitely worth a watch if there is any confusion as to _why_ the division operation in the snippet above produces the output we want - I certainly gained some useful intuition from his explanation.
 
 Now, each row in the tensor is a probability distribution that corresponds to a single character. For that character, it provides the probability that it is immediately followed by every other character in the vocabulary.
 
@@ -264,11 +270,11 @@ These samples look like:
 'vybeartosay'
 ```
 
-In terms of names, these samples leave something to be desired. The underlying issue is that character bigrams produce a simple model of the training data, capturing only small, local structure. 
+As names, these samples leave something to be desired. The underlying issue is that character bigrams produce a simple model of the training data, capturing only small, local structure. In future posts in this series we'll construct more sophisticated models that produce names that are subjectively higher in quality (i.e. realism).
 
 ### Loss Function
 
-In addition to manually evaluating the model's quality by sampling from it, we'd like some means of computing this automatically. What we need is a _loss function_ - a function that takes as input our model and some data and produces a single number that summarizes the model's quality with respect to that data. Typically, loss functions follow the convention that higher values are worse while lower values (closer to `0`) are better.
+In addition to subjectively evaluating the model's quality by sampling from it, we'd like some means of computing its quality automatically. We need a _loss function_ - a function that takes as input our model and some data and produces a single number that summarizes the model's quality with respect to that data. Typically, loss functions follow the convention that higher values are worse while lower values (closer to `0`) are better.
 
 We can start constructing our loss function by observing that we can calculate the probability that the model assigns to each bigram in the dataset:
 
@@ -292,13 +298,15 @@ for w in words:
         likelihood *= model[ix0, ix1]
 ```
 
-We run into a problem with calculation of the likelihood, however, because repeated multiplication by values between 0 and 1 quickly drives the magnitude of the likelihood to be vanishingly small.
+We run into a problem with calculation of the likelihood, however, because repeated multiplication by values between 0 and 1 quickly drives the magnitude of the likelihood to be vanishingly small. After some number of calculations like this, we'll lose all precision as we reach the limits of the [binary representation of floating point numbers](https://en.wikipedia.org/wiki/IEEE_754).
 
-To get around this, we'll work with the _log-likelihood_. This is valid because the logarithm is a monotonically-increasing function, so maximizing the log-likelihood is equivalent to maximizing the likelihood. Furthermore, the logarithm function has useful property that
+To get around this, we'll work with the _log-likelihood_. For our purposes, an important property of the logarithm is that it is a monotonically-increasing function:
 
-```
-log(a*b*c) = log(a) + log(b) + log(c)
-```
+![](log.png)
+
+Therefore, our transformation is valid: maximizing the log-likelihood is equivalent to maximizing the likelihood. Furthermore, the logarithm function has useful property that
+
+> $$\log(a*b*c) = \log(a) + \log(b) + \log(c)$$
 
 implying that we can compute the log-likelihood as a sum of the logarithm of the individual bigram probabilities assigned by our model.
 
@@ -325,7 +333,9 @@ for w in data:
 nll = -log_likelihood
 ```
 
-We perform one final transformation to compute the mean negative log-likelihood across all of the bigrams against which we are evaluating our loss. The final loss function looks like:
+We perform one final transformation to compute the mean negative log-likelihood across all of the bigrams against which we are evaluating our loss. Now, the final value represents the average loss across every evaluation example, rather than the sum of these example-level losses.
+
+The final loss function looks like:
 
 ```python
 def loss(model: torch.Tensor, data: list[str]) -> float:
@@ -343,7 +353,7 @@ def loss(model: torch.Tensor, data: list[str]) -> float:
 
     # invert to get negative log-likelihood
     nll = -log_likelihood
-    # compute mean of nll
+    # compute mean of negative log-likelihood
     return nll / n
 ```
 
@@ -372,7 +382,7 @@ P[stoi["j"], stoi["q"]]
 # tensor(0.)
 ```
 
-Then, when we compute the log of `0`, we get `-inf`:
+Then, when we compute the logarithm of `0`, we get `-inf`, because the domain of the logarithm function is the set of all positive real numbers:
 
 ```python
 torch.log(P[stoi["j"], stoi["q"]]).item()
@@ -405,3 +415,7 @@ loss(P, words)
 ```
 
 This is about `0.0006` higher than the loss we computed prior to applying smoothing.
+
+### Conclusions and Next Steps
+
+We've trained and evaluated a simple statistical language model using character bigrams. Along the way, we discussed the concept of a _loss function_ as a means of assessing model quality. For now, this loss function allows us to evaluate the performance impact of manual tweaks to our model, and we'll see some of this at work in the next post. However, following that, we'll re-implement the character bigram model in a machine learning paradigm (rather than a statistical one); there, the loss function will provide a means of _automatically_ updating the model's parameters to improve its performance.
