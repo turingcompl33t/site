@@ -1,0 +1,9 @@
+<footer class="site-footer">
+  <span>&copy; {{ now.Year }} {{ site.Params.author | default site.Title }}</span>
+  {{- with site.Params.email }}
+    <span><a href="mailto:{{ . }}">{{ . }}</a></span>
+  {{- end }}
+  {{- with site.Params.github }}
+    <span><a href="https://github.com/{{ . }}" rel="me">GitHub</a></span>
+  {{- end }}
+</footer>

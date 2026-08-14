@@ -1,0 +1,36 @@
+{{ define "main" }}
+  <div class="bio">
+    {{ .Content }}
+  </div>
+
+  {{/* "Recent" pulls across all three collections, not just essays. */}}
+  {{- $tracked := slice "essays" "publications" "talks" }}
+  {{- $recent := where site.RegularPages "Section" "in" $tracked }}
+  {{- with first 5 $recent.ByDate.Reverse }}
+    <section class="recent">
+      <h2>Recent</h2>
+      <ol class="items">
+        {{- range . }}
+          <li class="item">
+            <div class="item-row">
+              <span class="item-title">
+                {{- if .Content -}}
+                  <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                {{- else -}}
+                  {{ .Title }}
+                {{- end -}}
+              </span>
+              <time class="item-date" datetime="{{ .Date.Format "2006-01-02" }}">
+                {{- .Date.Format "Jan 2006" -}}
+              </time>
+            </div>
+            <div class="item-meta">
+              <span class="kind">{{ .Section | singularize }}</span>
+              {{- with (or .Params.venue .Params.event) }} · {{ . }}{{ end }}
+            </div>
+          </li>
+        {{- end }}
+      </ol>
+    </section>
+  {{- end }}
+{{ end }}

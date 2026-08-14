@@ -1,0 +1,9 @@
+{{ define "main" }}
+  <h1>{{ .Title }}</h1>
+  {{ with .Content }}<div class="section-intro">{{ . }}</div>{{ end }}
+  {{ partial "dated-items.html" (dict
+    "pages" .Pages.ByDate.Reverse
+    "metaKeys" (slice "event" "location")
+    "dateFormat" "Jan 2006"
+  ) }}
+{{ end }}

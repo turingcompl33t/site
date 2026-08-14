@@ -1,0 +1,23 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+{{- $title := cond .IsHome site.Title (printf "%s · %s" .Title site.Title) }}
+<title>{{ $title }}</title>
+
+{{- $desc := or .Description .Summary site.Params.description }}
+<meta name="description" content="{{ $desc | plainify | truncate 160 }}">
+
+<link rel="canonical" href="{{ .Permalink }}">
+
+{{- with resources.Get "css/main.css" }}
+  {{- $opts := dict "minify" (not hugo.IsDevelopment) }}
+  {{- with . | css.Build $opts }}
+    {{- if hugo.IsDevelopment }}
+      <link rel="stylesheet" href="{{ .RelPermalink }}">
+    {{- else }}
+      {{- with . | fingerprint }}
+        <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}">
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}

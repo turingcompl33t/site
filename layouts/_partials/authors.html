@@ -1,0 +1,30 @@
+{{- /*
+Renders an author list, bolding the site owner's own name.
+
+The name to bold comes from `params.author` in hugo.toml, so there is one
+place to change it. Matching is exact - an entry that lists the name in a
+different form (e.g. "K. Dotterrer") will not be bolded.
+
+Accepts either a list of names or a single string.
+
+@param {any} authors  Value of a page's `authors` front matter.
+
+@example {{ partial "authors.html" (dict "authors" .Params.authors) }}
+*/}}
+
+{{- $self := site.Params.author }}
+{{- $names := .authors }}
+{{- if not (reflect.IsSlice $names) }}
+  {{- $names = slice $names }}
+{{- end }}
+
+{{- $out := slice }}
+{{- range $names }}
+  {{- $name := . | htmlEscape }}
+  {{- if and $self (eq . $self) }}
+    {{- $out = $out | append (printf "<strong>%s</strong>" $name) }}
+  {{- else }}
+    {{- $out = $out | append $name }}
+  {{- end }}
+{{- end }}
+{{- delimit $out ", " | safeHTML -}}

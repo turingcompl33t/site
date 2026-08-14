@@ -1,0 +1,37 @@
+{{ define "main" }}
+  <h1>{{ .Title }}</h1>
+  {{ with .Content }}<div class="section-intro">{{ . }}</div>{{ end }}
+
+  {{/* Year-grouped reverse-chronological archive. Used by essays. */}}
+  {{- range .Pages.GroupByDate "2006" }}
+    <section class="year-group">
+      <h2 class="year">{{ .Key }}</h2>
+      <ol class="posts">
+        {{- range .Pages }}
+          <li class="post">
+            <div class="item-row">
+              <span class="item-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></span>
+              <time class="item-date" datetime="{{ .Date.Format "2006-01-02" }}">
+                {{- .Date.Format "Jan 2" -}}
+              </time>
+            </div>
+            {{- with .Description }}<p class="item-description">{{ . }}</p>{{ end }}
+          </li>
+        {{- end }}
+      </ol>
+    </section>
+  {{- end }}
+
+  {{- with (index site.Taxonomies "tags") }}
+    {{- if eq $.Section "essays" }}
+      <section class="tag-index">
+        <h2>Tags</h2>
+        <div class="tag-list">
+          {{- range $name, $terms := . }}
+            <a href="{{ (site.GetPage (printf "/tags/%s" $name)).RelPermalink }}">{{ $name }} <span class="count">{{ len $terms }}</span></a>
+          {{- end }}
+        </div>
+      </section>
+    {{- end }}
+  {{- end }}
+{{ end }}

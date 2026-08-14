@@ -1,0 +1,75 @@
+{{- /*
+Renders a reverse-chronological list of reference items (publications, talks,
+projects). These share nearly identical shape, so all three sections render
+through this one partial.
+
+Front matter `description`, if set, renders immediately under the title. The
+date is omitted entirely when a page has none, so undated entries (long-running
+projects) render cleanly.
+
+@param {page.Pages} pages       Pages to render, already sorted.
+@param {[]string}   metaKeys    Front-matter keys joined into the meta line,
+                                in order. e.g. (slice "venue") for publications,
+                                (slice "event" "location") for talks.
+@param {string}     dateFormat  Optional Go time layout. Defaults to year only.
+
+The title links to the item's own page only when that page has body content
+(an abstract, notes, a transcript). Items that are just a citation and a set
+of links render as plain text, so adding one never creates an empty page.
+
+@example {{ partial "dated-items.html" (dict "pages" .Pages "metaKeys" (slice "venue")) }}
+*/}}
+
+{{- $metaKeys := .metaKeys | default slice }}
+{{- $dateFormat := .dateFormat | default "2006" }}
+
+{{- with .pages }}
+  <ol class="items">
+    {{- range $page := . }}
+      <li class="item">
+        <div class="item-row">
+          <span class="item-title">
+            {{- if $page.Content -}}
+              <a href="{{ $page.RelPermalink }}">{{ $page.Title }}</a>
+            {{- else -}}
+              {{ $page.Title }}
+            {{- end -}}
+          </span>
+          {{- if not $page.Date.IsZero }}
+            <time class="item-date" datetime="{{ $page.Date.Format "2006-01-02" }}">
+              {{- $page.Date.Format $dateFormat -}}
+            </time>
+          {{- end }}
+        </div>
+
+        {{- with $page.Description }}
+          <div class="item-description">{{ . }}</div>
+        {{- end }}
+
+        {{- with $page.Params.authors }}
+          <div class="item-authors">
+            {{- partial "authors.html" (dict "authors" .) -}}
+          </div>
+        {{- end }}
+
+        {{- $meta := slice }}
+        {{- range $k := $metaKeys }}
+          {{- with index $page.Params $k }}
+            {{- $meta = $meta | append . }}
+          {{- end }}
+        {{- end }}
+        {{- with $meta }}
+          <div class="item-meta">{{ delimit . " · " }}</div>
+        {{- end }}
+
+        {{- with $page.Params.links }}
+          <div class="item-links">
+            {{- range . }}
+              <a href="{{ .url }}">{{ .label }}</a>
+            {{- end }}
+          </div>
+        {{- end }}
+      </li>
+    {{- end }}
+  </ol>
+{{- end }}

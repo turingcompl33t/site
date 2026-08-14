@@ -1,0 +1,37 @@
+{{ define "main" }}
+  <article class="page">
+    <h1>{{ .Title }}</h1>
+
+    {{- if and (not .Date.IsZero) (ne .Section "") }}
+      <div class="page-meta">
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+        {{- with .Params.venue }}<span>{{ . }}</span>{{ end }}
+        {{- with .Params.event }}<span>{{ . }}</span>{{ end }}
+        {{- with .Params.location }}<span>{{ . }}</span>{{ end }}
+        {{- with .Params.authors }}
+          <span>{{ partial "authors.html" (dict "authors" .) }}</span>
+        {{- end }}
+      </div>
+    {{- end }}
+
+    {{- with .Params.links }}
+      <div class="item-links page-links">
+        {{- range . }}
+          <a href="{{ .url }}">{{ .label }}</a>
+        {{- end }}
+      </div>
+    {{- end }}
+
+    <div class="content">
+      {{ .Content }}
+    </div>
+
+    {{- with .GetTerms "tags" }}
+      <div class="page-tags">
+        {{- range . }}
+          <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+        {{- end }}
+      </div>
+    {{- end }}
+  </article>
+{{ end }}

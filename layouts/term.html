@@ -1,0 +1,16 @@
+{{ define "main" }}
+  <h1>Tagged &ldquo;{{ .Title }}&rdquo;</h1>
+  <ol class="posts">
+    {{- range .Pages.ByDate.Reverse }}
+      <li class="post">
+        <div class="item-row">
+          <span class="item-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></span>
+          <time class="item-date" datetime="{{ .Date.Format "2006-01-02" }}">
+            {{- .Date.Format "Jan 2, 2006" -}}
+          </time>
+        </div>
+        {{- with .Description }}<p class="item-description">{{ . }}</p>{{ end }}
+      </li>
+    {{- end }}
+  </ol>
+{{ end }}
