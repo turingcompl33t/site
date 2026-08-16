@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="KD">
+  <style>
+    /* Ink tile, paper monogram - mirrors the site's --fg / --bg tokens. */
+    .tile { fill: #16161d; }
+    .mark { stroke: #fffffe; }
+    @media (prefers-color-scheme: dark) {
+      .tile { fill: #e3e3e7; }
+      .mark { stroke: #17171b; }
+    }
+  </style>
+  <rect class="tile" width="64" height="64" rx="12"/>
+  <g class="mark" fill="none" stroke-width="6" stroke-linejoin="round">
+    <!-- K -->
+    <path d="M11 16V48"/>
+    <path d="M11 33L24 16"/>
+    <path d="M11 33L25 48"/>
+    <!-- D -->
+    <path d="M35 16V48"/>
+    <path d="M35 16h5a12 16 0 0 1 0 32h-5"/>
+  </g>
+</svg>

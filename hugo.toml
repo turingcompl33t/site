@@ -1,4 +1,4 @@
-baseURL = 'https://example.com/'
+baseURL = 'https://kyledotterrer.com/'
 locale = 'en-us'
 title = 'Kyle Dotterrer'
 enableRobotsTXT = true
@@ -8,7 +8,7 @@ enableRobotsTXT = true
   author = 'Kyle Dotterrer'
   # Shown in the footer. Leave empty to omit.
   email = ''
-  github = ''
+  github = 'turingcompl33t'
 
 [markup.goldmark.renderer]
   unsafe = true

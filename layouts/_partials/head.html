@@ -9,6 +9,10 @@
 
 <link rel="canonical" href="{{ .Permalink }}">
 
+<link rel="icon" href="{{ "favicon.ico" | relURL }}" sizes="32x32">
+<link rel="icon" href="{{ "favicon.svg" | relURL }}" type="image/svg+xml">
+<link rel="apple-touch-icon" href="{{ "apple-touch-icon.png" | relURL }}">
+
 {{- with resources.Get "css/main.css" }}
   {{- $opts := dict "minify" (not hugo.IsDevelopment) }}
   {{- with . | css.Build $opts }}
