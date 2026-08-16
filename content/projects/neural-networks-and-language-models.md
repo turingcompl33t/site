@@ -19,4 +19,4 @@ Each post is accompanied by source code in the [`makemore-and-friends`](https://
 
 - [A Statistical Character Bigram Language Model]({{< relref "2025-12-02-makemore-bigram" >}})
 - [N-Grams and Other Experiments]({{< relref "2026-02-11-makemore-ngram" >}})
-- [A Neural Character Bigram Language Model]({{< relref "2026-02-12-makemore-nn" >}})
+- [A Neural Character Bigram Language Model]({{< relref "2026-08-15-makemore-nn" >}})
