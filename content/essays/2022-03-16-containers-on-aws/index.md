@@ -211,7 +211,7 @@ With this setup, we can run the following command to build our image locally wit
 docker build --tag inference .
 ```
 
-**Pushing to a Private Registry**
+### Pushing to a Private Registry
 
 Now that the container is built, we can upload it to [ECR](https://aws.amazon.com/ecr/). The following commands assume that you have the following environment variables set in your shell session:
 
@@ -244,7 +244,7 @@ docker push ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPO_NAME}:inference
 
 Now our container image is available at `<AWS_ID>.dkr.ecr.us-east-1.amazonaws.com/<REPO_NAME>:inference-latest` and is ready for deployment via the services explored throughout the rest of this post.
 
-**Pushing to a Public Registry**
+### Pushing to a Public Registry
 
 Some of the services explored in this post (e.g. Lightsail Containers) require that the container image be deployed to a public image registry. The process for deploying an image to a public registry on ECR is nearly identical to that of deploying to a private registry, but I'll recapitulate the commands here.
 

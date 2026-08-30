@@ -71,7 +71,7 @@ Cal interprets this as a reflection of Yudkowsky's belief in the potency of [rec
 
 Far from being a comment on how we'll achieve ASI, Yudkowsky is actually pointing out how little we understand about the way this technology actually works.
 
-**ASI and Recursive Self-Improvement**
+### ASI and Recursive Self-Improvement
 
 Although I don't think it follows from the source material to which he is responding, I'll still contend with Cal's argument regarding the infeasibility of recursive self-improvement because I believe two crucial misunderstandings are in evidence. 
 
@@ -89,7 +89,7 @@ More importantly, this analysis misses two key points regarding how recursive se
 
 The second point follows naturally from this first: human intervention, like prompting, is still necessary for technological innovation in AI to proceed, at least for the time being. Cal assumes too much about how the recursive self-improvement process must begin, suggesting that today's coding agents must somehow bootstrap themselves to the point where they could write their own internal logic. In reality, gains in the rate of AI technological progress are occurring today because of our ability to leverage AI to increase our productivity. The technology is still recursively self-improving, albeit with human input, because advances in the technology allow us to make more rapid progress in research and engineering, in turn leading to further advances in the technology, in a classic positive-feedback pattern. 
 
-**Failure of the Current Paradigm**
+### Failure of the Current Paradigm
 
 As another piece of evidence that, far from being inevitable, ASI is likely infeasible, Cal points to a general slowing down in the rate of progress in AI development. He summarizes his position, which he describes in detail in an earlier [New Yorker article](https://www.newyorker.com/culture/open-questions/what-if-ai-doesnt-get-much-better-than-this), as follows:
 

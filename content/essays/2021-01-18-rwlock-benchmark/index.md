@@ -31,11 +31,11 @@ The benefit of reader-writer locks over vanilla locks is that they provide the a
 
 We'll look at two popular reader-writer lock implementations in this benchmark:
 
-**`tbb::reader_writer_lock`**
+### `tbb::reader_writer_lock`
 
 The reader-writer lock implementation from Intel's TBB library serves threads on a first-come first-served basis, with the added caveat that writers are given preference over readers - this is often an important modification to ensure that writers are not starved in read-heavy workloads. All waiting is done in userspace via busy-loops. This design is a double-edged sword: under low contention, this saves us potentially-expensive calls into the OS kernel, but under high contention this might lead to significant performance degradation as multiple cores are saturated with threads spinning on the lock.
 
-**`std::shared_mutex`**
+### `std::shared_mutex`
 
 The standard library's reader-writer lock implementation necessarily differs among compilers and platforms. For this benchmark I utilize a system with the following relevant specifications:
 
@@ -55,7 +55,7 @@ To evaluate the performance of these lock implementations, we focus on two impor
 
 ## Benchmark: Results
 
-**Throughput**
+### Throughput
 
 For throughput evaluation, we benchmark both lock implementations under two workload characteristics:
 
@@ -70,7 +70,7 @@ We observe a couple interesting trends here. First, as expected, throughout decl
 
 The other trend that stands out is the shape of the curve for `std::shared_mutex` under the _equal-load_ workload - we see a massive spike in the time required to complete the benchmark between 20-40 worker threads, diverging significantly from the pattern observed for the _read-heavy_ workload. We'll revisit this anomaly below. 
 
-**Latency**
+### Latency
 
 As in the throughput evaluation, we measure latency under both _read-heavy_ and _equal-load_ workloads. Here, the two workloads are separated into distinct figures because we plot the average latency experienced by reader and writer threads separately, and combining all of these results into a single figure becomes unwieldy.
 

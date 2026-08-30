@@ -12,7 +12,7 @@ In this post, we build on the statistical bigram language model we built in a [p
 
 Porting the existing bigram language model to one that supports character n-grams requires refactoring several implementation details. Here, we'll just look at the major ones. For the full details, you can refer to the [implementation](https://github.com/turingcompl33t/makemore-and-friends/blob/master/makemore/src/makemore/ngram_stat.py) of the `StatisticalNGram` class on GitHub.
 
-**Recording N-Gram Counts / Probabilities**
+### Recording N-Gram Counts / Probabilities
 
 The most complicated part of generalizing the bigram implementation to n-grams is determining how to represent n-gram counts when the value of `n` is dynamic.
 
@@ -46,7 +46,7 @@ N = torch.zeros((len(self.stoi), len(self.alphabet)), dtype=torch.int32)
 
 The n-gram probability matrix `P` has the same shape as `N`; it is computed from `N` in a manner identical to that employed for bigrams.
 
-**Extracting N-Grams**
+### Extracting N-Grams
 
 The logic for extracting n-grams from the word list must also change to account for a dynamic value of `n`. This functionality is handled by the `_extract_ngrams()` method in the implementation:
 
@@ -112,7 +112,7 @@ The process for hyperparameter tuning looks something like:
 3. For each hyperparameter configuration in the search space, train a model (on a subset of the training dataset) and evaluate its performance (on a distinct subset); return the best hyperparameter configuration
 4. With the best hyperparameter configuration, train the model on the complete training set and evaluate it on the test set
 
-**Creating a Train / Test Split**
+### Creating a Train / Test Split
 
 The first utility we need to support hyperparameter tuning is therefore a means of splitting a dataset into `train` and `test` splits. Libraries like [scikit learn](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html) can perform this operation for us; below is a simple implementation of this functionality that is specific to our dataset of words:
 
@@ -142,7 +142,7 @@ len(test) / len(words)
 # 0.19898229950363688
 ```
 
-**Defining the Search Space**
+### Defining the Search Space
 
 There are [many ways](https://scikit-learn.org/stable/modules/grid_search.html) of generating a search space for hyperparameter tuning. A simple, if computationally expensive, algorithm is _grid search_ wherein we compute the product of all hyperparameter variables and the values they can take. The code below computes a hyperparameter grid for grid search:
 
@@ -181,7 +181,7 @@ search_grid(hyperparameters)
  {'a': 1, 'b': 'world', 'c': 'baz'}]
 ```
 
-**Evaluating Performance**
+### Evaluating Performance
 
 The question that remains is: how do we evaluate the performance of our model with a specific combination of hyperparameters? We could simply rely on our train / test split method from before, but this would imply that for any given hyperparameter configuration, our model is only trained and evaluated once, and therefore we don't get a good sense for how this configuration performs when it is exposed to all of the available data.
 
@@ -258,7 +258,7 @@ print([_ for _ in kfold_split_cv(data)])
  (['1', '2', '3', '4', '5', '6'], ['7', '8', '9'])]
 ```
 
-**Putting it All Together**
+### Putting it All Together
 
 Now we put all of this together to perform hyperparameter tuning for our statistical n-gram model. First, we create a global `train` / `test` split of the entire dataset:
 
