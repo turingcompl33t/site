@@ -10,7 +10,7 @@ In a [prior post]({{< relref "2026-08-15-makemore-nn" >}}) in this series, we bu
 
 As before, the content in this post is based on Andrej Karpathy's [YouTube video](https://www.youtube.com/watch?v=TCH_1BHY58I&list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ&index=3) wherein he describes all of these concepts. The model itself is based on a 2003 implementation by [Bengio et al.](https://www.jmlr.org/papers/volume3/bengio03a/bengio03a.pdf). All of the source code that I produced for this post is available in my [`makemore-and-friends`](https://github.com/turingcompl33t/makemore-and-friends) repository. 
 
-### TL;DR
+## TL;DR
 
 - We adopt the modeling approach from [_A Neural Probabilistic Language Model_](https://www.jmlr.org/papers/volume3/bengio03a/bengio03a.pdf) (Bengio et al., 2003) to update our previous character bigram model
 - The new architecture includes an initial _embedding layer_ followed by a hidden layer with a configurable size
@@ -18,7 +18,7 @@ As before, the content in this post is based on Andrej Karpathy's [YouTube video
 - We also run through a simple empirical procedure to determine a good initial learning rate for our new model
 - Finally, we run some hyperparameter tuning experiments to achieve a minimum validation loss of `2.16`, just `0.01` lower than Andrej achieves in his video version of this model build
 
-### Weakness of the Prior Approach
+## Weakness of the Prior Approach
 
 Our previous approach using character bigrams is straightforward, but it suffers from the obvious shortcoming that the predictions are not very good. The best loss we achieved is still high, and the outputs don't really resemble names yet:
 
@@ -36,7 +36,7 @@ If we take just one prior character as context as we did in the bigram case, we 
 
 The number of rows in this matrix grows exponentially in the number of characters in the context. This approach is too naive to scale well, so we'll adopt a smarter one that allows us to efficiently scale the length of our context.
 
-### The Updated Approach
+## The Updated Approach
 
 We'll follow the architecture described by Bengio et al. in [_A Neural Probabilistic Language Model_](https://www.jmlr.org/papers/volume3/bengio03a/bengio03a.pdf). The paper describes a word-level model where ours will operate on individual characters, but the modeling approach and architecture will be equivalent.
 
@@ -50,7 +50,7 @@ So, the approach does not operate on the words directly, but rather on _embeddin
 
 We can perform the same embedding process for our characters; taking a 27-dimensional input space to one that is much smaller. We'll use a multi-layer neural network to predict the next character in a sequence, and optimize it by minimizing negative log likelihood--the same loss function used in [prior posts]({{< relref "2026-08-15-makemore-nn" >}}).
 
-**Intuition**
+### Intuition
 
 Aside from reducing the dimensionality of the input and thereby making training computationally tractable, why does embedding the input characters into a lower-dimensional feature space make sense? The embedding space allows us to transfer knowledge from examples that we encounter during training to those that may be out-of-distribution at test time. Bengio et al. provide the following example to help arrive at the intution for this:
 
@@ -58,7 +58,7 @@ Aside from reducing the dimensionality of the input and thereby making training 
 
 They argue that words with similar semantic meanings will naturally occur close to one another in the embedding space. This means that encountering one sequence during training will not only increase the probability of generating that sequence at test time, but also increase the probability of generating semantically-similar sequences.
 
-**Architecture Overview**
+### Architecture Overview
 
 The high-level architecture for the model we'll build appears below:
 
@@ -74,7 +74,7 @@ After the input layer comes the hidden layer. The size of the hidden layer is a 
 
 Finally, the output layer has one neuron for each character in our vocabulary, or 27 neurons. We'll employ a softmax layer to get a probability distribution over the next character in the sequence given the activations from this layer.
 
-### Building our Dataset
+## Building our Dataset
 
 With the overview of what we'll build established, we can begin. We begin by loading the dataset, which is a text file containing 32,033 names, one per line:
 
@@ -171,7 +171,7 @@ print(X.shape, X.dtype, Y.shape, Y.dtype)
 # (torch.Size([32, 3]), torch.int64, torch.Size([32]), torch.int64)
 ```
 
-### Building the Network
+## Building the Network
 
 We'll start building the network by constructing the lookup table `C`. We initialize it randomly:
 
@@ -195,7 +195,7 @@ F.one_hot(torch.tensor(vocab.stoi["e"]), num_classes=len(vocab)).float() @ C
 
 This the way we implementing a similar lookup in our previous bigram model, but indexing directly is considerably more efficient than the matmul approach, so we'll stick with indexing our in our implementation.
 
-**Embedding All Inputs Simultaneously**
+### Embedding All Inputs Simultaneously
 
 The first layer of our network is a means of selecting the embedding for each character in our context. We saw above how we can do this for a single character with the embedding table `C`, but how can we do this (a) multiple characters in the context and (b) multiple distinct examples, each with their own multi-character context?
 
@@ -249,7 +249,7 @@ emb.shape
 # torch.Size([32, 3, 2])
 ```
 
-**Constructing the Hidden Layer**
+### Constructing the Hidden Layer
 
 Now we know how to get the embeddings for each of the input characters in the context, so it is time to move on to the hidden layer.
 
@@ -289,7 +289,7 @@ h = torch.tanh(emb.view((-1, 6)) @ W1 + b1)
 h.shape # (32, 100)
 ```
 
-**The Final Layer and Loss**
+### The Final Layer and Loss
 
 The hidden layer is straightforward. We know we want `len(vocab)` (27) activations as output from the layer, and the number of inputs is determined by the number of neurons in the hidden layer (currently 100). We can randomly initialize our weights and biases:
 
@@ -322,9 +322,9 @@ loss = F.cross_entropy(logits, Y)
 loss # 14.7941
 ```
 
-I discuss some of the reasons to prefer `F.cross_entropy()` to the hand-rolled implementation in [[1]](#footnotes). We'll us `F.cross_entropy()` going forward instead of the manual probability distribution computation.
+I discuss some of the reasons to prefer `F.cross_entropy()` to the hand-rolled implementation in [[1]](#1-preferring-fcross_entropy). We'll us `F.cross_entropy()` going forward instead of the manual probability distribution computation.
 
-**The Complete Forward Pass**
+### The Complete Forward Pass
 
 The complete forward pass looks like this:
 
@@ -339,7 +339,7 @@ logits = h @ W2 + b2
 loss = F.cross_entropy(logits, Y)
 ```
 
-### Wrapping the Forward Pass and a Simple Training Loop
+## Wrapping the Forward Pass and a Simple Training Loop
 
 Now that we've defined the forward pass, we can wrap the logic in the `.forward()` method on the `MLP` class:
 
@@ -386,7 +386,7 @@ for _ in range(10):
         p.data += -0.1 * p.grad
 ```
 
-### Introducing Mini-Batches
+## Introducing Mini-Batches
 
 In this training loop, we compute the forward pass over all inputs in the dataset, and subsequently utilize the loss computed from each of these examples to run the backward pass and update weights.
 
@@ -409,7 +409,7 @@ for _ in range(100):
 
 We use [`torch.randint`](https://docs.pytorch.org/docs/2.13/generated/torch.randint.html) to generate the `ix` index tensor, and we subsequently utilize this to index into `X` and select a subset of its rows while computing the forward pass.
 
-### Finding a Good Initial Learning Rate
+## Finding a Good Initial Learning Rate
 
 In our training loop, our update step currently looks like:
 
@@ -483,7 +483,7 @@ However, its slightly easier to see the shape of the results when we plot the lo
 
 We can see that the optimal learning rate lies somewhere between an exponent of `-1.5` and -`1`, translating to a learning rate of around `0.01`.
 
-### Beating Andrej's Best Validation Loss (Barely)
+## Beating Andrej's Best Validation Loss (Barely)
 
 Now that we have a decent understanding for how we should set our learning rate, we can run a more rigorous experiment to tune our model's hyperparameters and see what level of performance we can achieve.
 
@@ -499,7 +499,7 @@ for each hyperparamter setting:
 
 We'll see the actual code I wrote for this in just a second, but first we need to define all of the inputs to the experiment.
 
-**Building the Hyperparameter Grid**
+### Building the Hyperparameter Grid
 
 The first thing we'll do is define the range of hyperparameters over which we'll search. For my experiment, I just looked at two hyperparameters: `embedding_dimension` and `hidden_layer_size`, with the candidate values below:
 
@@ -543,7 +543,7 @@ Invoking this function on the search space defined previously gives a complete h
 
 There are more values that we might consider searching over here, like the `block_size` and the `batch_size`. I'll comment on what I found for these after summarizing my results.
 
-**Splitting the Dataset - Train, Validation, and Test**
+### Splitting the Dataset - Train, Validation, and Test
 
 During the hyperparameter search, for each candidate setting, we need a means of evaluating how good it is relative to the others. Instead of looking directly at the training loss though, we'll instead consider _validation loss_, or the loss on some other held-out set of data that was not encountered during training. 
 
@@ -562,7 +562,7 @@ train, dev, test = split(words, fractions=(0.8, 0.1))
 
 With this invocation, we get a `train` set that is 80% of the total examples, a `dev` set that is 10%, and a `test` set that is also 10%.
 
-**Defining Learning Rate Schedule**
+### Defining the Learning Rate Schedule
 
 We saw before that the ideal learning rate for this model is somewhere between `0.01` and `0.1`. During my experiment, I employ [learning rate decay](https://en.wikipedia.org/wiki/Learning_rate) to recduce the learning rate by a factor of 10, from `0.1` to `0.01` at the halfway point of the training process:
 
@@ -572,7 +572,7 @@ lr_schedule = lambda step: 0.01 if step / train_steps > 0.5 else 0.1
 
 This helps our model find a local-minimum point for the loss by reducing the probability that we continuously "jump over" it with a constant learning rate that is too high.
 
-**Results**
+### Experimentation & Results
 
 The full experiment loop that I wrote to explore hyperparameters looks like this:
 
@@ -628,14 +628,16 @@ The table below summarizes the final hyperparamter settings that produced my hig
 
 One area that certainly could produce further performance improvements is adjusting the number of training steps and the learning rate schedule for the particular hyperparameter setting. My learning rate schedule was fixed (see above), and I trained for 150,000 steps for each setting. I think its likely that something smarter like [early stopping](https://en.wikipedia.org/wiki/Early_stopping) would find the number of training steps that best fit the current setting of the hyperparameters and ultimately achieve lower validation loss.
 
-### References
+## References
 
 - [_A Neural Probabilistic Language Model_](https://www.jmlr.org/papers/volume3/bengio03a/bengio03a.pdf) - Bengio et al.
 - [PyTorch Internals](https://blog.ezyang.com/2019/05/pytorch-internals/) - Eric Yang's blog
 
-### Footnotes
+## Footnotes
 
-**[1] Preferring `F.cross_entropy()**
+This section contains footnotes for this post.
+
+### [1] Preferring `F.cross_entropy()`
 
 There are some distinct, compelling reasons to prefer `F.cross_entropy()` from `torch` to a hand-rolled implementation of negative log likelihood loss. The first is just the amount of code we have to write. Our hand-rolled implementation looked like:
 
