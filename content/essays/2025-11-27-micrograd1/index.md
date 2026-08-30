@@ -216,7 +216,7 @@ The [activation function](https://en.wikipedia.org/wiki/Activation_function) is 
 
 There are multiple classes of non-linear functions that may be used as activations in neural networks, each of which may contain multiple functions. For our implementation, we'll focus on just two: hyperbolic tangent (`tanh`) and rectified linear unit (`ReLU`).
 
-**`tanh`**
+### `tanh`
 
 The hyperbolic tangent function, `tanh`, looks like this:
 
@@ -285,7 +285,7 @@ b.backward()
 a.grad # 0.0706508248531642
 ```
 
-**`ReLU`**
+### `ReLU`
 
 The rectified linear unit, or ReLU is the technical name for a very simple function: it is merely the nonnegative part of its argument.
 
