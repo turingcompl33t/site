@@ -10,6 +10,14 @@ In a [prior post]({{< relref "2026-08-15-makemore-nn" >}}) in this series, we bu
 
 As before, the content in this post is based on Andrej Karpathy's [YouTube video](https://www.youtube.com/watch?v=TCH_1BHY58I&list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ&index=3) wherein he describes all of these concepts. The model itself is based on a 2003 implementation by [Bengio et al.](https://www.jmlr.org/papers/volume3/bengio03a/bengio03a.pdf). All of the source code that I produced for this post is available in my [`makemore-and-friends`](https://github.com/turingcompl33t/makemore-and-friends) repository. 
 
+### TL;DR
+
+- We adopt the modeling approach from [_A Neural Probabilistic Language Model_](https://www.jmlr.org/papers/volume3/bengio03a/bengio03a.pdf) (Bengio et al., 2003) to update our previous character bigram model
+- The new architecture includes an initial _embedding layer_ followed by a hidden layer with a configurable size
+- We shift from computing gradients with every input example in each iteration of the optimization loop to optimizing with minibatches
+- We also run through a simple empirical procedure to determine a good initial learning rate for our new model
+- Finally, we run some hyperparameter tuning experiments to achieve a minimum validation loss of `2.16`, just `0.01` lower than Andrej achieves in his video version of this model build
+
 ### Weakness of the Prior Approach
 
 Our previous approach using character bigrams is straightforward, but it suffers from the obvious shortcoming that the predictions are not very good. The best loss we achieved is still high, and the outputs don't really resemble names yet:
