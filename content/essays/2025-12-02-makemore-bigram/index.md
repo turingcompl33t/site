@@ -312,7 +312,7 @@ To get around this, we'll work with the _log-likelihood_. For our purposes, an i
 
 Therefore, our transformation is valid: maximizing the log-likelihood is equivalent to maximizing the likelihood. Furthermore, the logarithm function has useful property that
 
-> $$\log(a*b*c) = \log(a) + \log(b) + \log(c)$$
+> \log(a*b*c) = \log(a) + \log(b) + \log(c)
 
 implying that we can compute the log-likelihood as a sum of the logarithm of the individual bigram probabilities assigned by our model.
 
