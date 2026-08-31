@@ -628,6 +628,25 @@ The table below summarizes the final hyperparamter settings that produced my hig
 
 One area that certainly could produce further performance improvements is adjusting the number of training steps and the learning rate schedule for the particular hyperparameter setting. My learning rate schedule was fixed (see above), and I trained for 150,000 steps for each setting. I think its likely that something smarter like [early stopping](https://en.wikipedia.org/wiki/Early_stopping) would find the number of training steps that best fit the current setting of the hyperparameters and ultimately achieve lower validation loss.
 
+When I run a final training pass with the model under its best hyperparameter configuration, I achieve a test loss of `2.15`, indicating that the model is generalizing well from the train / validation phase to the test phase.
+
+We can also sample from the model to qualitatively assess its quality:
+
+```python
+for name in model.sample(5):
+    print(name)
+```
+
+Its outputs are beginning to appear distinctly more name-like:
+
+```
+gun
+kateliy
+rysen
+dell
+eleliah
+```
+
 ## References
 
 - [_A Neural Probabilistic Language Model_](https://www.jmlr.org/papers/volume3/bengio03a/bengio03a.pdf) - Bengio et al.
