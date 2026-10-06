@@ -4,11 +4,12 @@ date = 2026-09-20
 slug = 'makemore-batchnorm'
 description = 'TODO'
 tags = ['ai', 'language-models', 'neural-networks']
+draft = true
 +++
 
 In the [prior post]({{< relref "2026-08-22-makemore-mlp" >}}) in this series, we TODO
 
-### intro
+## intro
 
 want to understand the architecture intuitively
 
@@ -27,7 +28,7 @@ and the initial appearance of our training loss curve:
 
 ![baseline](baseline.png)
 
-### fixing the initial loss
+## fixing the initial loss
 
 the first thing we'll scrutinize is the initialization of the network.
 
@@ -149,7 +150,7 @@ we can see why when we plot the losses. now, the loss plot no longer looks like 
 
 ![initial loss](initial_loss.png)
 
-### fixing the saturated tanh
+## fixing the saturated tanh
 
 break after the first optimization iteration. we see that we have a reasonable initial loss now:
 
@@ -274,7 +275,7 @@ train = 2.036147117614746
 val   = 2.101691484451294
 ```
 
-### Calculating the Initialization Scale (Kaiming Initialization)
+## Calculating the Initialization Scale (Kaiming Initialization)
 
 At this point, our network initialization looks like this:
 
@@ -302,7 +303,7 @@ We scale each of our parameter tensors (aside from `C`) by some value in order t
 
 This is fine, but its labor intensive. It turns out there is a more principled way that we can arrive at some of these scaling factors that gives us (a) some assurance that we've selected an optimal value and (b) the ability to arrive at them without manual experimentation.
 
-**A Motivating Example**
+### A Motivating Example
 
 We'll work our way towards this initialization method via a motivating example. Consider a simplified neural network that looks like this:
 
@@ -344,42 +345,70 @@ In general, we want to keep a consistent mean of `0` and standard deviation of `
 Mathematically, the way to accomplish this is to scale by dividing element-wise by the square root of the _fan-in_ for the layer, where the fan-in is just the number of inputs. Here, `w` has shape `(10, 200)`, so we can implement this for our network like:
 
 ```python
-w = torch.randn(10, 200) / 10**0.5
+w = torch.randn(10, 200) * 1/10**0.5
 ```
 
-Now we get a standard deviation of `0.9848` for `y`, very close to our target of standard deviation `1`.
+I implement division by multiplying by the multiplicative inverse. This keeps the calculation consistent with the form it will take in subsequent updates.
 
-**TODO**
+With this scale applied, now we get a standard deviation of `0.9848` for the output Gaussian `y`, very close to our target of `1`.
 
-many papers have looked into how to generalize this type of analysis to neural networks
+### Kaiming Initialization
 
-an influential one is  the paper [Delving Deep into Rectifiers](https://arxiv.org/abs/1502.01852)
+Now we want to apply this same type of reasoning to the initialization of our neural network. The approach that we'll follow comes from the influential paper [Delving Deep into Rectifiers](https://arxiv.org/abs/1502.01852) by _Kaiming et al._
 
-this one looked at ReLU and PReLU activations specifically.
+Here, the authors specifically look at the ReLU and PReLU activations specifically, but we can apply the results to our `tanh` activations as well.
 
-introduces "Kaiming initialization" for a neural network (named for the paper's first author). this initialization is implemented directly in [PyTorch](https://docs.pytorch.org/docs/2.14/nn.init.html#torch.nn.init.kaiming_normal_).
+Kaiming et al.'s analysis introduces the notion of _gain_ -- a small value that augments the scaling factor we found above (one over the square root of the fan-in) to account for the specific nature of the nonlinearity. For instance, for the ReLU activation function, they find that the scaling factor needed to optimally preserve the gaussian is:
 
-**another TODO**
+$$\frac{2}{\sqrt{n}}$$
 
-it used to be the case that initialization was very important; improper initialization could cause failure to optimize; everything was finicky and fragile
+where $n$ represents the fan-in.
 
-modern innovations have made this less so
-- residual connections
-- normalization layers
-- better optimizer (e.g. Adam)
+In general, they find that initialization in which values are sampled from $\mathcal{N}(0, std^2)$ preserves the gaussian optimally, where:
 
-in practice, now what should we do? normalize weights by square root of the fan-in
+$$std = \frac{gain}{\sqrt{fan\_mode}}$$
 
-we want to set the standard deviation such that it is equal to:
+This concept is now known as "Kaiming initialization" or "Kaiming init". The method is so pervasive that it is implemented directly in PyTorch within its [init module](https://docs.pytorch.org/docs/2.14/nn.init.html#torch.nn.init.kaiming_normal_). The module provides its own table of values for _gain_ that make the initialization unambiguous:
 
+| Nonlinearity | Gain |
+| --- | --- |
+|  Linear / Identity | 1 |
+| Conv{1,2,3}D | 1 |
+| Sigmoid | 1 |
+| Tanh | $\frac{5}{3}$ |
+| ReLU | $\sqrt{2}$ |
+| Leaky ReLU | $\sqrt{\frac{2}{1 + negative\_slope^2}}$ |
+| SELU | $\frac{3}{4}$ |
+
+We see that the gain for the ReLU nonlinearity is $\sqrt{2}$, like we saw above. For tanh, the gain is $\frac{5}{3}$; this is what we'll use in our implementation.
+
+### Applying to Our Network
+
+According to Kaiming initialization, we want to initialize our network such that the parameters are distributed like $\mathcal{N}(0, std^2)$ where
+
+$$std = \frac{gain}{\sqrt{fan\_in}}$$
+
+Currently, our initialization looks like:
+
+```python
+W1 = torch.randn(
+    (
+        BLOCK_SIZE * embedding_dimension,
+        hidden_layer_size,
+    ),
+    generator=g,
+) * 0.2
 ```
-std = gain / sqrt(fan-in)
+
+Because we use `torch.randn` for initialization, our tensor is already initialized with a distribution that resembles a gaussian with mean 0 and standard deviation 0.2, because of the previous scaling we applied. We can merely swap this scaling by 0.2 with the value we compute according to the Kaiming init method:
+
+```python
+kaiming_init_scale = (5/3) / ((BLOCK_SIZE * embedding_dimension)**0.5)
 ```
 
-in order to achieve kaiming normalization. gain comes from a [table](https://docs.pytorch.org/docs/2.14/nn.init.html#torch.nn.init.kaiming_normal_) in the PyTorch docs.
-for `tanh` the gain is `5/3`.
+Where `BLOCK_SIZE * embedding_dimension` is our fan-in. The resolved value comes out as: `0.3042903097250923`, meaning we had previously selected a scaling factor that was just `0.1` off the value suggested by the Kaiming initialization method.
 
-now we can apply this to our network:
+Completing the initialization:
 
 ```python
 kaiming_init_scale = (5/3) / ((BLOCK_SIZE * embedding_dimension)**0.5)
@@ -392,18 +421,14 @@ W1 = torch.randn(
 ) * kaiming_init_scale
 ```
 
-for us this comes out to be:
-
-```
-kaiming init scale = 0.3042903097250923
-```
-
-now we can initialize this way and run optimization.
+Now we can run optimization again to observe the impact on our final loss values:
 
 ```
 train = 2.0376644134521484
 val   = 2.106989622116089
 ```
+
+Ultimately, the new initialization makes very little difference, and actually degrades validation performance slightly.
 
 ### loss log
 
