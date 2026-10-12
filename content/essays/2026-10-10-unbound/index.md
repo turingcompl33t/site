@@ -44,13 +44,13 @@ In their [monitorability assessments](https://deploymentsafety.openai.com/gpt-6-
 - It exhibits a greater ability to control its CoT
 - It demonstrates increased capabilities when reasoning is disabled
 
-**Greater Propensity to Hide Actions**
+### Greater Propensity to Hide Actions
 
 In their internal evaluation of Astra, OpenAI finds that [awareness of CoT monitoring reduces monitorability](https://deploymentsafety.openai.com/gpt-6-astra/awareness-of-cot-monitoring-reduces-monitorability). They measure this phenomenon via the recall rate for a CoT-only monitor, which drops considerably (under 50%, versus a 100%-recall baseline) when the model is informed that its CoT will be monitored.
 
 More directly relevant to the question of propensity, however, is the fact that Astra's CoT token usage [declines substantially](https://deploymentsafety.openai.com/gpt-6-astra/awareness-of-cot-monitoring-reduces-monitorability/fig-35) when it is informed that its CoT will be monitored. Some successful runs utilize zero CoT tokens, even when the reasoning effort is set to its highest level.
 
-**Increased CoT Control**
+### Increased CoT Control
 
 OpenAI evaluates Astra on the [CoT-Control benchmark](https://cdn.openai.com/pdf/a21c39c1-fa07-41db-9078-973a12620117/cot_controllability.pdf), which tracks the model's ability to follow instructions about its CoT. In their assessment, they [find](https://deploymentsafety.openai.com/gpt-6-astra/cot-controllability) that Astra's ability to control its CoT is substantially higher than that of GPT-5.6 Sol. The difference is [most pronounced](https://deploymentsafety.openai.com/gpt-6-astra/cot-controllability/fig%3Afigure-28) at moderate to high reasoning lengths (1k to 10k tokens).
 
@@ -68,7 +68,7 @@ Whereas Astra answers:
 
 UK AISI provides an independent monitorability evaluation for Astra, which OpenAI summarizes in the system card. Among other results, they [find](https://deploymentsafety.openai.com/gpt-6-astra/external-evaluation-for-monitorability---uk-aisi) that Astra demonstrates an increased degree of control over the contents of its CoT, adhering to the CoT constraint in their evaluation at a rate of 93% (relative to a rate of 48% for GPT-5.6 Sol).
 
-**Augmented Non-CoT Reasoning**
+### Augmented Non-CoT Reasonings
 
 In another result from their external monitorability evaluation, UK AISI measures the time horizon for math problems that Astra can solve without reasoning. They [find](https://deploymentsafety.openai.com/gpt-6-astra/external-evaluation-for-monitorability---uk-aisi) that Astra can solve considerably more difficult problems under these constraints than previous models, with a measured time horizon of 30.9 minutes relative to 3.6 minutes for GPT-5.6 Sol. The [figure](https://deploymentsafety.openai.com/gpt-6-astra/external-evaluation-for-monitorability---uk-aisi/fig%3Ano-cot-math-time-horizon) from Astra's system card summarizes the startling break from trend that this result presents.
 
