@@ -6,4 +6,10 @@
   {{- with site.Params.github }}
     <span><a href="https://github.com/{{ . }}" rel="me">GitHub</a></span>
   {{- end }}
+  {{- with site.Params.scholar }}
+    <span><a href="https://scholar.google.com/citations?user={{ . }}" rel="me">Google Scholar</a></span>
+  {{- end }}
+  {{- with site.Params.linkedin }}
+    <span><a href="https://www.linkedin.com/in/{{ . }}/" rel="me">LinkedIn</a></span>
+  {{- end }}
 </footer>

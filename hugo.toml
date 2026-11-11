@@ -9,6 +9,8 @@ enableRobotsTXT = true
   # Shown in the footer. Leave empty to omit.
   email = ''
   github = 'turingcompl33t'
+  scholar = 'CLqV388AAAAJ'
+  linkedin = 'kyle-dotterrer'
 
 [markup.goldmark.renderer]
   unsafe = true
