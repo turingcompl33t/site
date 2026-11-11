@@ -5,7 +5,7 @@ description = 'Data and machine learning engineering on ATR-MCAS, a joint effort
 org = 'Artificial Intelligence Integration Center'
 
 [[links]]
-  label = 'Coverage'
+  label = 'coverage'
   url = 'https://www.militaryaerospace.com/computers/article/14167236/battlefield-artificial-intelligence-ai-target-data'
 +++
 

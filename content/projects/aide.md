@@ -5,7 +5,7 @@ description = 'Architect and technical lead for AIDE, a batteries-included platf
 org = 'Artificial Intelligence Integration Center'
 
 [[links]]
-  label = 'Site'
+  label = 'site'
   url = 'https://aide.ai.army.mil/'
 +++
 

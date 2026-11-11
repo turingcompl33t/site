@@ -4,7 +4,7 @@ date = 2025-12-02
 description = 'A series building neural networks and language models from scratch, starting at automatic differentiation and working up to models that generate natural language. Each post has accompanying source code.'
 
 [[links]]
-  label = 'Code'
+  label = 'code'
   url = 'https://github.com/turingcompl33t/makemore-and-friends'
 +++
 

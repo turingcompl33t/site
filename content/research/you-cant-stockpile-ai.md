@@ -5,6 +5,6 @@ venue = 'Modern War Institute at West Point'
 authors = ['Kyle Dotterrer']
 
 [[links]]
-  label = 'Article'
+  label = 'article'
   url = 'https://mwi.westpoint.edu/you-cant-stockpile-ai-military-advantage-in-the-age-of-algorithmic-diffusion/'
 +++

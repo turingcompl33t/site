@@ -8,6 +8,6 @@ authors = ['Kyle Dotterrer']
   label = 'PDF'
   url = 'https://github.com/turingcompl33t/udf-jit/blob/master/documents/thesis/paper.pdf'
 [[links]]
-  label = 'Video'
+  label = 'video'
   url = 'https://www.youtube.com/watch?v=JAvFZ8_XRsk'
 +++

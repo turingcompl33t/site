@@ -5,10 +5,10 @@ description = 'A course final project investigating whether dynamic optimization
 org = 'Carnegie Mellon University'
 
 [[links]]
-  label = 'Report'
+  label = 'report'
   url = 'https://github.com/turingcompl33t/compilers-final/blob/master/artifacts/report.pdf'
 [[links]]
-  label = 'Code'
+  label = 'code'
   url = 'https://github.com/turingcompl33t/compilers-final'
 +++
 

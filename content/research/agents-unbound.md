@@ -5,6 +5,6 @@ venue = 'Gray Space, Winter 2026'
 authors = ['Kyle Dotterrer']
 
 [[links]]
-  label = 'Article'
+  label = 'article'
   url = 'https://www.lineofdeparture.army.mil/Journals/Gray-Space/Archive/2026-Edition/Agents-Unbound/'
 +++

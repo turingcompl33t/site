@@ -5,6 +5,6 @@ venue = 'Gray Space, Summer 2026'
 authors = ['Kyle Dotterrer']
 
 [[links]]
-  label = 'Article'
+  label = 'article'
   url = 'https://www.lineofdeparture.army.mil/Journals/Gray-Space/Archive/Summer-2026/Where-are-the-10x-AI-Assisted/'
 +++

@@ -23,21 +23,17 @@ enableRobotsTXT = true
 
 [menus]
   [[menus.main]]
-    name = 'Writing'
-    pageRef = '/writing'
-    weight = 10
-  [[menus.main]]
-    name = 'Publications'
-    pageRef = '/publications'
-    weight = 20
-  [[menus.main]]
-    name = 'Talks'
-    pageRef = '/talks'
-    weight = 30
-  [[menus.main]]
     name = 'Projects'
     pageRef = '/projects'
-    weight = 35
+    weight = 10
+  [[menus.main]]
+    name = 'Research'
+    pageRef = '/research'
+    weight = 20
+  [[menus.main]]
+    name = 'Writing'
+    pageRef = '/writing'
+    weight = 30
 
 # HTML only - no feeds.
 [outputs]

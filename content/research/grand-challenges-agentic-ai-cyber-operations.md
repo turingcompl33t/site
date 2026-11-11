@@ -11,6 +11,6 @@ authors = [
 ]
 
 [[links]]
-  label = 'Article'
+  label = 'article'
   url = 'https://cyberdefensereview.army.mil/CDR-Content/Articles/Article-View/Article/4487436/grand-challenges-in-agentic-ai-for-cyber-operations-a-research-agenda/'
 +++

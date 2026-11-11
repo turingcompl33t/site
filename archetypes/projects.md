@@ -8,10 +8,10 @@ draft = true
 # org = ''
 
 # [[links]]
-#   label = 'GitHub'
+#   label = 'github'
 #   url = ''
 # [[links]]
-#   label = 'Site'
+#   label = 'site'
 #   url = ''
 +++
 

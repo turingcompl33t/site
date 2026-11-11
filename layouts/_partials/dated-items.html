@@ -1,6 +1,6 @@
 {{- /*
-Renders a reverse-chronological list of reference items (publications, talks,
-projects). These share nearly identical shape, so all three sections render
+Renders a reverse-chronological list of reference items (research and
+projects). These share nearly identical shape, so both sections render
 through this one partial.
 
 Front matter `description`, if set, renders immediately under the title. The
@@ -9,8 +9,8 @@ projects) render cleanly.
 
 @param {page.Pages} pages       Pages to render, already sorted.
 @param {[]string}   metaKeys    Front-matter keys joined into the meta line,
-                                in order. e.g. (slice "venue") for publications,
-                                (slice "event" "location") for talks.
+                                in order. e.g. (slice "venue") for research,
+                                (slice "org") for projects.
 @param {string}     dateFormat  Optional Go time layout. Defaults to year only.
 
 The title links to the item's own page only when that page has body content
