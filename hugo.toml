@@ -23,8 +23,8 @@ enableRobotsTXT = true
 
 [menus]
   [[menus.main]]
-    name = 'Essays'
-    pageRef = '/essays'
+    name = 'Writing'
+    pageRef = '/writing'
     weight = 10
   [[menus.main]]
     name = 'Publications'

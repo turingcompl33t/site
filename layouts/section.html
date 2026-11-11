@@ -2,7 +2,7 @@
   <h1>{{ .Title }}</h1>
   {{ with .Content }}<div class="section-intro">{{ . }}</div>{{ end }}
 
-  {{/* Year-grouped reverse-chronological archive. Used by essays. */}}
+  {{/* Year-grouped reverse-chronological archive. Used by writing. */}}
   {{- range .Pages.GroupByDate "2006" }}
     <section class="year-group">
       <h2 class="year">{{ .Key }}</h2>
@@ -23,7 +23,7 @@
   {{- end }}
 
   {{- with (index site.Taxonomies "tags") }}
-    {{- if eq $.Section "essays" }}
+    {{- if eq $.Section "writing" }}
       <section class="tag-index">
         <h2>Tags</h2>
         <div class="tag-list">
