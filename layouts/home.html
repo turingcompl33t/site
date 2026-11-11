@@ -14,8 +14,8 @@
           <li class="item">
             <div class="item-row">
               <span class="item-title">
-                {{- if .Content -}}
-                  <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                {{- if or .Content .Params.external -}}
+                  {{ partial "title-link.html" . }}
                 {{- else -}}
                   {{ .Title }}
                 {{- end -}}

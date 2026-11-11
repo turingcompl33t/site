@@ -2,7 +2,7 @@
 title = 'Declining Monitorability Makes Model-Intrinsic Properties Even More Important'
 date = 2026-10-10
 slug = 'unbound-monitorability'
-description = 'An addendum to an article I recently published, in light of new results regarding GPT-6 Astra'
+description = 'An addendum to [_Agents Unbound_](https://www.lineofdeparture.army.mil/Journals/Gray-Space/Archive/2026-Edition/Agents-Unbound/), an article I recently published, in light of new results regarding GPT-6 Astra.'
 tags = ['ai', 'alignment', 'evals']
 +++
 

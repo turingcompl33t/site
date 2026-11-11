@@ -3,9 +3,9 @@ Renders a reverse-chronological list of reference items (research and
 projects). These share nearly identical shape, so both sections render
 through this one partial.
 
-Front matter `description`, if set, renders immediately under the title. The
-date is omitted entirely when a page has none, so undated entries (long-running
-projects) render cleanly.
+Front matter `description`, if set, renders immediately under the title; inline
+Markdown (links, emphasis, code) is supported. The date is omitted entirely when
+a page has none, so undated entries (long-running projects) render cleanly.
 
 @param {page.Pages} pages       Pages to render, already sorted.
 @param {[]string}   metaKeys    Front-matter keys joined into the meta line,
@@ -43,7 +43,7 @@ of links render as plain text, so adding one never creates an empty page.
         </div>
 
         {{- with $page.Description }}
-          <div class="item-description">{{ . }}</div>
+          <div class="item-description">{{ . | markdownify }}</div>
         {{- end }}
 
         {{- with $page.Params.authors }}

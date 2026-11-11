@@ -2,7 +2,8 @@
   <h1>{{ .Title }}</h1>
   {{ with .Content }}<div class="section-intro">{{ . }}</div>{{ end }}
 
-  {{/* Year-grouped reverse-chronological archive. Used by writing. */}}
+  {{/* Year-grouped reverse-chronological archive. Used by writing, which mixes
+       posts hosted here with articles published elsewhere (`external`). */}}
   {{- range .Pages.GroupByDate "2006" }}
     <section class="year-group">
       <h2 class="year">{{ .Key }}</h2>
@@ -10,12 +11,13 @@
         {{- range .Pages }}
           <li class="post">
             <div class="item-row">
-              <span class="item-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></span>
+              <span class="item-title">{{ partial "title-link.html" . }}</span>
               <time class="item-date" datetime="{{ .Date.Format "2006-01-02" }}">
                 {{- .Date.Format "Jan 2" -}}
               </time>
             </div>
-            {{- with .Description }}<p class="item-description">{{ . }}</p>{{ end }}
+            {{- with .Params.venue }}<div class="item-meta">{{ . }}</div>{{ end }}
+            {{- with .Description }}<p class="item-description">{{ . | markdownify }}</p>{{ end }}
           </li>
         {{- end }}
       </ol>
