@@ -7,6 +7,10 @@ draft = true
 # Optional. Set for professional work, omit for personal projects.
 # org = ''
 
+# Optional. End of a multi-year project: a year, or 'present'. With it, the
+# listing shows a range (e.g. 2023 – 2025) starting at `date`'s year.
+# until = ''
+
 # [[links]]
 #   label = 'github'
 #   url = ''

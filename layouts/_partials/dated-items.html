@@ -6,6 +6,8 @@ through this one partial.
 Front matter `description`, if set, renders immediately under the title; inline
 Markdown (links, emphasis, code) is supported. The date is omitted entirely when
 a page has none, so undated entries (long-running projects) render cleanly.
+Front matter `until` (a year, or 'present') turns the date into a range, e.g.
+"2023 – 2025"; `date` still sets the start and the sort order.
 
 @param {page.Pages} pages       Pages to render, already sorted.
 @param {[]string}   metaKeys    Front-matter keys joined into the meta line,
@@ -38,6 +40,7 @@ of links render as plain text, so adding one never creates an empty page.
           {{- if not $page.Date.IsZero }}
             <time class="item-date" datetime="{{ $page.Date.Format "2006-01-02" }}">
               {{- $page.Date.Format $dateFormat -}}
+              {{- with $page.Params.until }} – {{ . }}{{ end -}}
             </time>
           {{- end }}
         </div>

@@ -4,7 +4,11 @@
 
     {{- if and (not .Date.IsZero) (ne .Section "") }}
       <div class="page-meta">
-        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+        {{- with .Params.until }}
+          <time datetime="{{ $.Date.Format "2006-01-02" }}">{{ $.Date.Format "2006" }} – {{ . }}</time>
+        {{- else }}
+          <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+        {{- end }}
         {{- with .Params.venue }}<span>{{ . }}</span>{{ end }}
         {{- with .Params.event }}<span>{{ . }}</span>{{ end }}
         {{- with .Params.location }}<span>{{ . }}</span>{{ end }}
