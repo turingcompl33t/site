@@ -1,5 +1,6 @@
 {{ define "main" }}
-  <h1>Tagged &ldquo;{{ .Title }}&rdquo;</h1>
+  {{/* Tags always display lowercase, whatever their front-matter casing. */}}
+  <h1>Tagged &ldquo;{{ .Title | lower }}&rdquo;</h1>
   <ol class="posts">
     {{- range .Pages.ByDate.Reverse }}
       <li class="post">
