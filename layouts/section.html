@@ -30,7 +30,7 @@
         <h2>Tags</h2>
         <div class="tag-list">
           {{- range $name, $terms := . }}
-            <a href="{{ (site.GetPage (printf "/tags/%s" $name)).RelPermalink }}">{{ $name }} <span class="count">{{ len $terms }}</span></a>
+            <a href="{{ (site.GetPage (printf "/tags/%s" $name)).RelPermalink }}">{{ $name | lower }} <span class="count">{{ len $terms }}</span></a>
           {{- end }}
         </div>
       </section>

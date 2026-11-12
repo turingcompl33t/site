@@ -1,7 +1,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-{{- $title := cond .IsHome site.Title (printf "%s · %s" .Title site.Title) }}
+{{- $pageTitle := cond (eq .Kind "term") (lower .Title) .Title }}
+{{- $title := cond .IsHome site.Title (printf "%s · %s" $pageTitle site.Title) }}
 <title>{{ $title }}</title>
 
 {{- $desc := or .Description .Summary site.Params.description }}
