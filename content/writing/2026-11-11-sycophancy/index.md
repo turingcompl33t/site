@@ -224,23 +224,23 @@ If I were to repeat this experiment, I'd consider introducing unambiguous framin
 >
 > I'm curious what you, the assistant, think: if you had to choose, would you rather have:
 
-## Takeaways
+## Conclusions
 
 My takeaways from this short analysis are:
 
 - **Every model is sycophantic by this measure.** Biography sensitivity ranges from 0.36 (Qwen3.5 9B) to 0.85 (Qwen3.5 27B). Even the least sensitive model shifts roughly a third of its answers to match the user's apparent views (modulo the role play caveat above).
-- **Sensitivity tends to increase with size, but the evidence is weak.** Within each dense series, sensitivity rises with parameter count (Gemma 3: 0.47 -> 0.55 -> 0.71; Qwen3.5 dense: 0.36 -> 0.85), which is consistent with the findings of Perez et al. However, given an effective sample size of roughly 20 questions, adjacent models' intervals overlap heavily, and the Qwen3.5 MoE series doesn't follow the trend at all.
-- **Size within a public model family is a loose proxy for model size.** Perez et al. varied model size while (presumably) holding everything else about training fixed. Released model families don't offer that control: different sizes within a family may receive different post-training, distillation, and data. Looking at all five Qwen3.5 models together, agreement rate is not monotonic in either active or total parameters. The 27B dense and 122B-A10B MoE models are nearly indistinguishable, while 35B-A3B lands much closer to 9B. I think the Gemma 3 result is suggestive, but the Qwen3.5 results illustrate why I can't conclude much from it.
+- **Sensitivity tends to increase with size, but the evidence is weak.** The general trend mirrors the findings from Perez et al. Within each dense series, sensitivity rises with parameter count (Gemma 3: 0.47 -> 0.55 -> 0.71; Qwen3.5 dense: 0.36 -> 0.85). However, given an effective sample size of roughly 20 questions, adjacent models' intervals overlap heavily, and the Qwen3.5 MoE series doesn't follow the trend at all.
+- **Size within a public model family is a loose proxy for model size.** Perez et al. varied model size while (presumably) holding everything else about training fixed. Released model families don't offer that control: different sizes within a family may be pretrained on different data, receive different post-training, or be the distillation from a larger model. Looking at all five Qwen3.5 models together, agreement rate is not monotonic in either active or total parameters. The 27B dense and 122B-A10B MoE models are nearly indistinguishable, while 35B-A3B lands much closer to 9B. I think the Gemma 3 result is suggestive, but the Qwen3.5 results illustrate why I can't conclude much from it.
 - **Nearly every model leans liberal, most strongly where it is least sensitive to the biography.** The two least sensitive models (Qwen3.5 9B and Gemma 3 4B) show the largest lean, about +0.10, while models with sensitivity above 0.8 lean only +0.02 to +0.05. Gemma 3 27B is the only model with a (slight) conservative lean, and that is well within the noise margin. However, this shouldn't be read as "larger models are less biased." A model that follows the biography almost all of the time rarely falls back on its own opinion, so its lean has little room to show up. The lean measured here is a _residual_ lean in the presence of a biography, not the model's default position.
 
-## Next Steps
+## Limitations
 
-There are a few extensions I'd like to make to this reproduction:
+There are a few corrections / extensions I'd make to this reproduction to improve the quality of the results:
 
+- **Disambiguated prompt**: rerun with the reworded question described above to separate sycophancy from persona prediction.
 - **No-biography baseline**: evaluate each model on the bare questions to measure its default position directly, rather than inferring a residual lean.
 - **Paired bootstrap**: every model sees the same questions and biographies, so bootstrapping the _difference_ in agreement rate between two models (resampling questions jointly) should yield much tighter intervals than comparing independent CIs. This might turn "overlapping intervals" into an actual answer about scaling.
 - **Bootstrap the lean**: lean likely varies a lot from question to question, so the +/-0.02 values are probably noise, and it's unclear whether the ~0.10 values in the smallest models survive.
-- **Disambiguated prompt**: rerun with the reworded question described above to separate sycophancy from persona prediction.
 
 ## Footnotes
 
