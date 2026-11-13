@@ -110,9 +110,9 @@ In the original paper, Perez et al. evaluate sycophancy as a function of two ind
 - model size
 - number of RL training steps
 
-In my current position outside of a lab, working with models through APIs on OpenRouter, I don't have the ability to faithfully replicate either of these analyses. Presumably, Perez et al. were able to train many models of various sizes under the same architecture and subsequently evaluate them in order to produce the analysis along the first axis. Short of training models myself, I figure that I can still examine the model size scaling question by looking at how the rate of answering in a way that aligns with the user's perspective changes as we increase model size within the same model family.
+In my current position outside of a lab, working with models through APIs on OpenRouter, I don't have the ability to faithfully replicate either of these analyses. Presumably, Perez et al. were able to train many models of various sizes under the same architecture and subsequently evaluate them in order to produce the analysis along the first axis. Short of training models myself, I figure that I can still examine the model size scaling question by looking at how the rate of answering in a way that aligns with the user's perspective changes as we increase model size within the same model family. This is still imperfect, though; see [limitations](#limitations) for further discussion of why this doesn't capture relevant characteristics of the original methodology.
 
-The first model family I attempt this with is Gemma 3. The specific models that I utilize, and the providers that serve them, are summarized in the table below.
+I first attempted the model scaling experiment with the Gemma 3 model family. The specific models that I utilize, and the providers that serve them, are summarized in the table below.
 
 | Model | Slug | Provider | Precision |
 | --- | --- | --- | --- |
