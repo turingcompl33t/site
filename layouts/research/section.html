@@ -1,8 +1,26 @@
 {{ define "main" }}
   <h1>{{ .Title }}</h1>
   {{ with .Content }}<div class="section-intro">{{ . }}</div>{{ end }}
-  {{ partial "dated-items.html" (dict
-    "pages" .Pages.ByDate.Reverse
-    "metaKeys" (slice "venue")
-  ) }}
+
+  {{/* Publications are the section's direct pages; service entries live in
+       the `service` subsection (content/research/service/). */}}
+  <section class="research-group">
+    <h2>Publications</h2>
+    {{ partial "dated-items.html" (dict
+      "pages" .RegularPages.ByDate.Reverse
+      "metaKeys" (slice "venue")
+    ) }}
+  </section>
+
+  {{- with .GetPage "service" }}
+    {{- with .RegularPages }}
+      <section class="research-group">
+        <h2>Service</h2>
+        {{ partial "dated-items.html" (dict
+          "pages" .ByDate.Reverse
+          "metaKeys" (slice "role")
+        ) }}
+      </section>
+    {{- end }}
+  {{- end }}
 {{ end }}
