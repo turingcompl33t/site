@@ -2,7 +2,7 @@
 title = 'Next Token Prediction with MLP'
 date = 2026-08-30
 slug = 'makemore-mlp'
-description = 'Extending makemore with an MLP, and running some experiments to minimize validation loss'
+description = 'Extending makemore with an MLP, and running some experiments to minimize validation loss.'
 tags = ['ai', 'language-models', 'neural-networks']
 +++
 

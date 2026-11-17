@@ -13,7 +13,7 @@ draft = true
 #   label = 'arXiv'
 #   url = ''
 # [[links]]
-#   label = 'Code'
+#   label = 'code'
 #   url = ''
 +++
 

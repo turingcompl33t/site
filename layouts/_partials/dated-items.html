@@ -1,16 +1,18 @@
 {{- /*
-Renders a reverse-chronological list of reference items (publications, talks,
-projects). These share nearly identical shape, so all three sections render
+Renders a reverse-chronological list of reference items (research and
+projects). These share nearly identical shape, so both sections render
 through this one partial.
 
-Front matter `description`, if set, renders immediately under the title. The
-date is omitted entirely when a page has none, so undated entries (long-running
-projects) render cleanly.
+Front matter `description`, if set, renders immediately under the title; inline
+Markdown (links, emphasis, code) is supported. The date is omitted entirely when
+a page has none, so undated entries (long-running projects) render cleanly.
+Front matter `until` (a year, or 'present') turns the date into a range, e.g.
+"2023 – 2025"; `date` still sets the start and the sort order.
 
 @param {page.Pages} pages       Pages to render, already sorted.
 @param {[]string}   metaKeys    Front-matter keys joined into the meta line,
-                                in order. e.g. (slice "venue") for publications,
-                                (slice "event" "location") for talks.
+                                in order. e.g. (slice "venue") for research,
+                                (slice "org") for projects.
 @param {string}     dateFormat  Optional Go time layout. Defaults to year only.
 
 The title links to the item's own page only when that page has body content
@@ -38,12 +40,13 @@ of links render as plain text, so adding one never creates an empty page.
           {{- if not $page.Date.IsZero }}
             <time class="item-date" datetime="{{ $page.Date.Format "2006-01-02" }}">
               {{- $page.Date.Format $dateFormat -}}
+              {{- with $page.Params.until }} – {{ . }}{{ end -}}
             </time>
           {{- end }}
         </div>
 
         {{- with $page.Description }}
-          <div class="item-description">{{ . }}</div>
+          <div class="item-description">{{ . | markdownify }}</div>
         {{- end }}
 
         {{- with $page.Params.authors }}

@@ -15,10 +15,10 @@ authors = [
   label = 'arXiv'
   url = 'https://arxiv.org/abs/2303.01998'
 [[links]]
-  label = 'Code'
+  label = 'code'
   url = 'https://github.com/mlte-team/mlte'
 [[links]]
-  label = 'Talk'
+  label = 'talk'
   url = 'https://youtu.be/UyQ1WNLFepY?t=4236'
 +++
 

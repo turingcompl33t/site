@@ -1,0 +1,14 @@
+{{- /*
+Renders an item's title as a link. Articles published elsewhere (front matter
+`external`) link out and carry a trailing arrow; everything else links to its
+own page on this site.
+
+@context {page.Page} The page being listed.
+
+@example <span class="item-title">{{ partial "title-link.html" . }}</span>
+*/}}
+{{- with .Params.external -}}
+  <a href="{{ . }}">{{ $.Title }}</a><span class="external" aria-label="external link">↗</span>
+{{- else -}}
+  <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+{{- end -}}
