@@ -2,7 +2,7 @@
 title = 'Improving LM Performance with Better Initialization'
 date = 2026-11-17
 slug = 'makemore-init'
-description = 'Dissecting the current makemore implementation to fix subtle errors that stem from sub-optimal network initialization'
+description = 'Dissecting the current makemore implementation to fix subtle errors that stem from sub-optimal network initialization.'
 tags = ['ai', 'language-models', 'neural-networks']
 +++
 
