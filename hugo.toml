@@ -15,6 +15,14 @@ enableRobotsTXT = true
 [markup.goldmark.renderer]
   unsafe = true
 
+# Pass math through Goldmark untouched; layouts/_markup/render-passthrough.html
+# renders it to HTML with KaTeX at build time.
+[markup.goldmark.extensions.passthrough]
+  enable = true
+  [markup.goldmark.extensions.passthrough.delimiters]
+    block = [['\[', '\]'], ['$$', '$$']]
+    inline = [['\(', '\)'], ['$', '$']]
+
 [markup.highlight]
   noClasses = false
   style = 'algol_nu'
