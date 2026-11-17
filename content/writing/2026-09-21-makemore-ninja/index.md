@@ -4,6 +4,7 @@ date = 2026-09-20
 slug = 'makemore-batchnorm'
 description = 'TODO'
 tags = ['ai', 'language-models', 'neural-networks']
+draft = true
 +++
 
 In the [prior post]({{< relref "2026-08-22-makemore-mlp" >}}) in this series, we TODO
