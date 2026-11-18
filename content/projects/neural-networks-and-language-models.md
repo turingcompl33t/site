@@ -28,3 +28,4 @@ Each post is accompanied by source code in the [`makemore-and-friends`](https://
 - [N-Grams and Other Experiments]({{< relref "2026-02-11-makemore-ngram" >}})
 - [A Neural Character Bigram Language Model]({{< relref "2026-08-15-makemore-nn" >}})
 - [Next Token Prediction with MLP]({{< relref "2026-08-22-makemore-mlp" >}})
+- [Improving LM Performance with Better Initialization]({{< relref "2026-11-17-makemore-init" >}})
