@@ -28,6 +28,7 @@
               <span class="kind">{{ .Section | singularize }}</span>
               {{- with (or .Params.venue .Params.event) }} · {{ . }}{{ end }}
             </div>
+            {{- with .Description }}<p class="item-description">{{ . | markdownify }}</p>{{ end }}
           </li>
         {{- end }}
       </ol>

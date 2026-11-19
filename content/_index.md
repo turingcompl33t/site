@@ -2,6 +2,8 @@
 title = 'Kyle Dotterrer'
 +++
 
-I work on software engineering, AI, and security. <!-- TODO: replace with a
-real 2–4 sentence bio. This block is the homepage lede; everything below it
-is generated automatically. -->
+I'm a senior cyberspace capability developer in the United States Army. I've developed technical solutions supporting multiple defense organizations, including Cyber National Mission Force and Joint Force Headquarters-Cyber.
+
+I was a member of the first cohort of the [Army Artificial Intelligence Scholars Program](https://www.cmu.edu/news/stories/archives/2020/september/army-partners-grow-data-science.html), earning an MS in [Computational Data Science](https://www.lti.cs.cmu.edu/academics/masters-programs/mcds.html) at Carnegie Mellon University and serving my utilization tour at the [Artificial Intelligence Integration Center](https://ai2c.army.mil/). At CMU, I completed my thesis ([_Just in Time Compilation for User-Defined Functions_](https://github.com/turingcompl33t/udf-jit/blob/master/documents/thesis/paper.pdf)) with the [CMU Database Group](https://db.cs.cmu.edu/), advised by [Andy Pavlo](https://www.cs.cmu.edu/~pavlo/). At AI2C, I initially worked on [computer vision]({{< relref "projects/atr-mcas" >}}) before transitioning to the technical lead role for the [Artificial Intelligence Development Environment]({{< relref "projects/aide" >}}).
+
+I currently serve as a [research scientist](https://www.westpoint.edu/directory/kyle-dotterrer) at the [Army Cyber Institute](https://cyber.army.mil/). Here, I've developed novel ML-based methods to detect malicious [living-off-the-land]({{< relref "projects/lotl-intrusion-detection" >}}) cyber activity. My current research focus is [agentic cyber evaluations]({{< relref "projects/agentic-cyber-evaluations" >}})---designing and implementing new evals to measure interesting model properties (e.g. offensive capability, propensity under realistic conditions) and developing the tooling and methods to support these efforts.
