@@ -32,3 +32,19 @@
 {{- if .Store.Get "hasMath" }}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" crossorigin="anonymous">
 {{- end }}
+
+{{- /* Footnote hover popovers, only on pages that use native footnotes. */}}
+{{- if strings.Contains (string .Content) "footnote-ref" }}
+  {{- with resources.Get "js/footnotes.js" }}
+    {{- $opts := dict "minify" (not hugo.IsDevelopment) }}
+    {{- with . | js.Build $opts }}
+      {{- if hugo.IsDevelopment }}
+        <script src="{{ .RelPermalink }}" defer></script>
+      {{- else }}
+        {{- with . | fingerprint }}
+          <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>
+        {{- end }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}

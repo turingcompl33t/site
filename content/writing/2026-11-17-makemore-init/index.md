@@ -97,7 +97,9 @@ Now the loss is much higher than we anticipate with uniform logits.
 
 ### Examining the Real Network
 
-This simplified example demonstrates a general principle: we want the logits to be roughly uniform when the network is initialized in order to avoid high initial loss [[1](#1-caveat-about-uniform-initial-loss)]. The logits don't need to be zero necessarily, but making them all uniform at zero is an easy way to achieve this.
+This simplified example demonstrates a general principle: we want the logits to be roughly uniform when the network is initialized in order to avoid high initial loss.[^uniform] The logits don't need to be zero necessarily, but making them all uniform at zero is an easy way to achieve this.
+
+[^uniform]: I imagine this is only the case when we don't have a strong prior about how the logits should look. For instance, could we achieve better performance here if we took advantage of our prior knowledge of character frequencies? Could we initialize the network in such a way that e.g. the logit that corresponds to the letter `e` is relatively higher than the others to achieve better performance?
 
 If we examine the logits in the first iteration of our training run, they look like:
 
@@ -473,17 +475,13 @@ The table below records the final losses achieved through these experiments. Los
 | Fix `tanh` Saturation | `2.036` | `2.102` |
 | Add Kaiming Init | `2.038` | `2.107` |
 
-The [unabridged loss log](#2-unabridged-loss-log) contains the loss values without rounding.
+The [unabridged loss log](#unabridged-loss-log) contains the loss values without rounding.
 
-## Footnotes
+## Appendix
 
-This section contains footnotes for this post.
+This section contains additional content for this post.
 
-### [1] Caveat about Uniform Initial Loss
-
-I imagine this is only the case when we don't have a strong prior about how the logits should look. For instance, could we achieve better performance here if we took advantage of our prior knowledge of character frequencies? Could we initialize the network in such a way that e.g. the logit that corresponds to the letter `e` is relatively higher than the others to achieve better performance?
-
-### [2] Unabridged Loss Log
+### Unabridged Loss Log
 
 Baseline:
 

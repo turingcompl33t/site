@@ -313,3 +313,67 @@ th, td {
   color: var(--muted);
   margin-bottom: 1.5rem;
 }
+
+/* ------------------------------------------------------------- footnotes */
+
+.footnote-ref {
+  text-decoration: none;
+  padding: 0 0.1em;
+}
+
+sup {
+  line-height: 0;
+}
+
+.footnotes {
+  margin-top: 3rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.footnotes ol {
+  padding-left: 1.5rem;
+}
+
+.footnotes li + li {
+  margin-top: 0.5rem;
+}
+
+.footnotes li:target {
+  color: var(--fg);
+}
+
+.footnote-backref {
+  text-decoration: none;
+}
+
+.footnote-popover {
+  position: absolute;
+  z-index: 10;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: min(28rem, calc(100vw - 24px));
+  max-height: min(20rem, 60vh);
+  overflow-y: auto;
+  padding: 0.75rem 1rem;
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.12);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.footnote-popover[hidden] {
+  display: none;
+}
+
+.footnote-popover > :first-child { margin-top: 0; }
+.footnote-popover > :last-child { margin-bottom: 0; }
+
+@media (prefers-color-scheme: dark) {
+  .footnote-popover {
+    box-shadow: 0 4px 16px rgb(0 0 0 / 0.5);
+  }
+}
