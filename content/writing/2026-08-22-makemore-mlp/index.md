@@ -322,7 +322,7 @@ loss = F.cross_entropy(logits, Y)
 loss # 14.7941
 ```
 
-I discuss some of the reasons to prefer `F.cross_entropy()` to the hand-rolled implementation in [[1]](#1-preferring-fcross_entropy). We'll us `F.cross_entropy()` going forward instead of the manual probability distribution computation.
+I discuss some of the reasons to prefer `F.cross_entropy()` to the hand-rolled implementation in [the appendix](#preferring-fcross_entropy). We'll us `F.cross_entropy()` going forward instead of the manual probability distribution computation.
 
 ### The Complete Forward Pass
 
@@ -652,11 +652,11 @@ eleliah
 - [_A Neural Probabilistic Language Model_](https://www.jmlr.org/papers/volume3/bengio03a/bengio03a.pdf) - Bengio et al.
 - [PyTorch Internals](https://blog.ezyang.com/2019/05/pytorch-internals/) - Eric Yang's blog
 
-## Footnotes
+## Appendix
 
-This section contains footnotes for this post.
+This section contains additional content for the post.
 
-### [1] Preferring `F.cross_entropy()`
+### Preferring `F.cross_entropy()`
 
 There are some distinct, compelling reasons to prefer `F.cross_entropy()` from `torch` to a hand-rolled implementation of negative log likelihood loss. The first is just the amount of code we have to write. Our hand-rolled implementation looked like:
 

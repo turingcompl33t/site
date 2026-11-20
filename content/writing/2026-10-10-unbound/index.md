@@ -30,13 +30,17 @@ The evidence, then, suggests that runtime monitoring provides an effective means
 
 ## GPT-6 Astra's Reduced Monitorability
 
-The approaches from AISI and METR rely on inspecting the model's chain-of-thought (CoT) in order to make determinations regarding unsanctioned or dangerous behavior [[1]](#footnotes). The CoT is valuable here because it provides insight into the agent's intentions in a way that might be difficult, or complicated by ambiguity, in the presence of actions alone.
+The approaches from AISI and METR rely on inspecting the model's chain-of-thought (CoT) in order to make determinations regarding unsanctioned or dangerous behavior.[^aisi] The CoT is valuable here because it provides insight into the agent's intentions in a way that might be difficult, or complicated by ambiguity, in the presence of actions alone.
 
-Effective runtime monitoring in this paradigm therefore requires model _monitorability_--an ability to determine what the model is actually doing by reading its CoT. We can think of monitorability as the product of three distinct properties of the model [[2]](#footnotes):
+[^aisi]: In their [post](https://www.aisi.gov.uk/blog/building-a-more-secure-environment-for-evaluating-dangerous-capabilities), AISI states that they implement a variant of their monitor that does not require the CoT, relying on the actions alone. However, they speculate that this action-only monitor will be less effective than the variant that includes CoT.
+
+Effective runtime monitoring in this paradigm therefore requires model _monitorability_--an ability to determine what the model is actually doing by reading its CoT. We can think of monitorability as the product of three distinct properties of the model[^taxonomy]:
 
 - Its **propensity** to perform sneaky actions, the true nature of which it would like to hide from observers
 - Its **ability** to control the contents of its CoT
 - Its mechanistic **need** to utilize its CoT in order to accomplish difficult tasks
+
+[^taxonomy]: I derive this simple taxonomy from [_Astra can do a concerning amount with no chain of thought_](https://www.lesswrong.com/posts/eRmzz8J8Qkzqvzrgg/astra-can-do-a-concerning-amount-with-no-chain-of-thought) by Neel Nanda. I think it differs slightly from the version that Neel presents in his post, which is why I formulate my own variant rather than citing his directly.
 
 In their [monitorability assessments](https://deploymentsafety.openai.com/gpt-6-astra/monitorability) for GPT-6 Astra, OpenAI finds that Astra's monitorability declines as a result of changes across each of these three dimensions:
 
@@ -81,12 +85,6 @@ In my Gray Space article, I advocated for an alignment-based approach to well-be
 The recent results from Astra, however, suggest that runtime monitoring based on CoT may be a fragile and fleeting approach to the problem. Astra's reduced monitorability, across all relevant dimensions, reduces our ability to effectively utilize its CoT to understand and control its behavior.
 
 Moreover, if we accept OpenAI's claims that Astra's new monitorability properties are the [result of capability improvements alone](https://thezvi.substack.com/p/astra-is-hard-to-monitor?open=false#%C2%A7monitorability-declines-seem-unlikely-to-be-only-capability-gains), and not attributable to other architectural updates, then this might be the start of a more general trend towards increasingly opaque frontier models. In the presence of such a trend, we'll become more reliant on model-intrinsic properties (alignment, e.g., boundedness) as our ability to apply external controls degrades.
-
-## Footnotes
-
-[1] In their [post](https://www.aisi.gov.uk/blog/building-a-more-secure-environment-for-evaluating-dangerous-capabilities), AISI states that they implement a variant of their monitor that does not require the CoT, relying on the actions alone. However, they speculate that this action-only monitor will be less effective than the variant that includes CoT.
-
-[2] I derive this simple taxonomy from [_Astra can do a concerning amount with no chain of thought_](https://www.lesswrong.com/posts/eRmzz8J8Qkzqvzrgg/astra-can-do-a-concerning-amount-with-no-chain-of-thought) by Neel Nanda. I think it differs slightly from the version that Neel presents in his post, which is why I formulate my own variant rather than citing his directly.
 
 ## References
 

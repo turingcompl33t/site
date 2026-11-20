@@ -4,6 +4,7 @@ date = 2026-12-01
 slug = 'astra-nightmare'
 description = 'TODO'
 tags = ['ai', 'evals']
+draft = true
 +++
 
 AISI _Figure 15_ ([source](https://arxiv.org/pdf/2611.10030)).
