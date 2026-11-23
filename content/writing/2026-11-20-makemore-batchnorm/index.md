@@ -7,7 +7,7 @@ tags = ['ai', 'language-models', 'neural-networks']
 draft = true
 +++
 
-In the [prior post]({{< relref "2026-08-22-makemore-init" >}}) in this series, we worked through (a simplification of) the techniques in [_A Neural Probabilistic Language Model_](https://www.jmlr.org/papers/volume3/bengio03a/bengio03a.pdf) (Bengio et al., 2003) to build a multi-layer perceptron that performs next-token prediction.
+In the [prior post]({{< relref "2026-11-17-makemore-init" >}}) in this series, we worked through (a simplification of) the techniques in [_A Neural Probabilistic Language Model_](https://www.jmlr.org/papers/volume3/bengio03a/bengio03a.pdf) (Bengio et al., 2003) to build a multi-layer perceptron that performs next-token prediction.
 
 ## TL;DR
 
@@ -114,7 +114,7 @@ train = 2.0668270587921143
 val   = 2.104844808578491
 ```
 
-the results are comparable to what we've observed previously; see the [loss log](#unabridged-loss-log). we dont expect to see huge changes here though because this network is so simple. in the [previous post]({{< relref "2026-08-22-makemore-init" >}}) we were able to efficiently compute the way the initialization should look in order to make the pre-activations look the way they should. in a deeper network, however, such a manual calculation would likely be infeasible, and this is where the real benefit of this technique would show. applying a batchnorm layer in such cases is straightforward.
+the results are comparable to what we've observed previously; see the [loss log](#unabridged-loss-log). we dont expect to see huge changes here though because this network is so simple. in the [previous post]({{< relref "2026-11-17-makemore-init" >}}) we were able to efficiently compute the way the initialization should look in order to make the pre-activations look the way they should. in a deeper network, however, such a manual calculation would likely be infeasible, and this is where the real benefit of this technique would show. applying a batchnorm layer in such cases is straightforward.
 
 typical to apply batchnorm layers throughout the network after linear layers like we have here.
 
@@ -208,7 +208,7 @@ This section contains additional content for this post.
 
 ### Unabridged Loss Log
 
-This contains the unabridged loss log, with results continued from the [previous post]({{< relref "2026-08-22-makemore-init" >}}).
+This contains the unabridged loss log, with results continued from the [previous post]({{< relref "2026-11-17-makemore-init" >}}).
 
 Baseline:
 
