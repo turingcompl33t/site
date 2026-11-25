@@ -50,6 +50,9 @@ The benchmark utilizes OpenAI's real internal agent monitoring system to judge s
 
 OpenAI runs the benchmark under two conditions: a [guided condition](https://deploymentsafety.openai.com/gpt-6-2-astra-sol/oai-repo-sabotage-v2/fig-50) where they provide the target model with step-by-step instructions through one path to complete the sabotage, and an [unguided condition](https://deploymentsafety.openai.com/gpt-6-2-astra-sol/oai-repo-sabotage-v2/fig-51) where these instructions are elided. They report successful evasion rates under three conditions, based on whether the L1 monitor has access to the CoT only, actions only, or the full transcript for the target model. The L2 monitor is always provided the complete transcript.
 
+![OAI-repo sabotage V2 successful evasion rates by monitor access](system_card_sabotage.png)
+_Source: [OpenAI](https://deploymentsafety.openai.com/gpt-6-2-astra-sol/oai-repo-sabotage-v2/fig-50), Figure 50._
+
 The results are dense because of the number of independent and dependent variables of interest. My primary takeaways are:
 
 - L1 evasion is nonexistent in both guided and unguided conditions in the presence of action monitoring (action-only and full transcript)
@@ -65,15 +68,16 @@ The results are dense because of the number of independent and dependent variabl
 
 GPT-6.2 Astra achieves a higher successful sandbox escape rate than GPT-6 Astra in the [guided condition](https://deploymentsafety.openai.com/gpt-6-2-astra-sol/sneaky-sandbox-escape/fig-52), and improves noticeably on the results of all earlier models in the [unguided condition](https://deploymentsafety.openai.com/gpt-6-2-astra-sol/sneaky-sandbox-escape/fig-53). Furthermore, GPT-6.2 Astra outperforms all previous models in evading a CoT-only monitor on this benchmark[^contradiction].
 
+![Sneaky sandbox escape success rates by model and monitor access](system_card_sandbox.png)
+_Source: [OpenAI](https://deploymentsafety.openai.com/gpt-6-2-astra-sol/sneaky-sandbox-escape/fig-52), Figure 52._
+
 [^contradiction]: There is an apparent contradiction here between the results from non-adversarial evaluations and those presented for OAI-repo sabotage V2 and sneaky sandbox escape. Namely, why is CoT-only monitoring more effective in the former case, while action-only monitoring is more effective in the latter? I discuss this in the [appendix](#explaining-cot-only-vs-action-only-results).
 
 **Math Side-Tasking Monitor Evasion** In OpenAI's final adversarial monitorability benchmark, the model is given a software engineering task and simultaneously asked to solve a complex math problem without a monitor detecting the secondary task[^reading]. OpenAI uses this benchmark as a means of measuring the model's ability to implement [steganographic reasoning](https://openreview.net/forum?id=2g5cJqX15Y).
 
 [^reading]: This is how I am reading the [benchmark description](https://deploymentsafety.openai.com/gpt-6-2-astra-sol/math-side-tasking-monitor-evasion) at least. We aren't given many details of its implementation. Specifically, I assume that the intent of the benchmark is for the CoT to be just one aspect of the model's implementation of the solution. Aside from its CoT, the model has the ability to take actions on the SWE task that appear to be approaching the primary task intent, but are actually intended to help compute the answer to the math problem. The CoT then is what allows the model to reason about the steps it needs to take towards this end, and how to disguise its side-efforts effectively. An alternative reading could be that the model is intended to solve the math problem entirely in its CoT, without it impacting the primary task at all. I think this would be a more specific measure for CoT control, while being a less useful overall measure of monitorability.
 
-The latest results on this benchmark are... strange. GPT-6.2 Astra refuses the math side task at [exceptionally high rates](https://deploymentsafety.openai.com/gpt-6-2-astra-sol/math-side-tasking-monitor-evasion/fig-54), starting around 40% at 20k output tokens and climbing to 100% by 60k output tokens. GPT-6 Astra, in contrast, saw only modest rates of refusal that hovered around 40%. The former model never successfully bypasses the monitor at any output token volume, but the high refusals rates render the results largely uninformative, at least as a measure of monitorability[^spooky].
-
-[^spooky]: TODO
+The latest results on this benchmark are... strange. GPT-6.2 Astra refuses the math side task at [exceptionally high rates](https://deploymentsafety.openai.com/gpt-6-2-astra-sol/math-side-tasking-monitor-evasion/fig-54), starting around 40% at 20k output tokens and climbing to 100% by 60k output tokens. GPT-6 Astra, in contrast, saw only modest rates of refusal that hovered around 40%. The former model never successfully bypasses the monitor at any output token volume, but the high refusals rates render the results largely uninformative, at least as a measure of monitorability.
 
 **UK AISI Adversarial Monitor Evasion** In addition to OpenAI's internal benchmark results, the system card [reports](https://deploymentsafety.openai.com/gpt-6-2-astra-sol/external-evaluation-for-monitorability-uk-aisi) the results of external evaluation from UK AISI. The results in the system card are thin and already heavily-summarized, but they do introduce one relevant data point: when tasked with a covert file-download side task, GPT-6.2 Astra evades an action-only monitor 48.8% of the time compared with just 1.7% of the time for GPT-6 Astra.
 
@@ -81,7 +85,10 @@ The latest results on this benchmark are... strange. GPT-6.2 Astra refuses the m
 
 UK AISI [evaluate](https://deploymentsafety.openai.com/gpt-6-2-astra-sol/external-evaluation-for-monitorability-uk-aisi) GPT-6.2 Astra's ability to perform tasks without producing visible reasoning--no-CoT capabilities. On an internal benchmark (extended from [Greenblatt](https://blog.redwoodresearch.org/p/measuring-no-cot-math-time-horizon)) of competition math problems, Astra's accuracy increased nearly 10% from the 6 to 6.2 releases--from 69.8% to 79.2%. On Neel Nanda's [NCRI](https://github.com/neelnanda-io/nocot-bench) ("no CoT reasoning index"), Astra's score rises from 159 to 171, implying roughly 2x better odds of solving a problem without visible reasoning.
 
-## Astra is Hard(er) to Monitor
+![UK AISI no-CoT capability results for GPT-6 Astra and GPT-6.2 Astra](aisi_no_cot.png)
+_Source: [OpenAI](https://deploymentsafety.openai.com/gpt-6-2-astra-sol/external-evaluation-for-monitorability-uk-aisi/fig-56), Figure 56._
+
+### Summary: Astra is Hard(er) to Monitor
 
 The presentation of results in the system card obfuscates the trends a bit (not necessarily deliberately). The three that I think are worrying are: 
 
@@ -91,7 +98,44 @@ The presentation of results in the system card obfuscates the trends a bit (not 
 
 TODO
 
-## TODO
+## Situational, Simulation, and Evaluation Awareness
+
+In addition to the results of OpenAI's own internal alignment evaluations, the system card reports findings from UK AISI's external evaluation of GPT-6.2. Among other alignment tests, UK AISI evaluates GPT-6.2 in its [unsanctioned supply-chain attack](https://arxiv.org/pdf/2609.38415) environment. The environment is modeled on a [real incident](https://cdn.prod.website-files.com/663bd486c5e4c81588db7a1d/6a724858f7db25c81487016d_Security%20Incident%20INC-2026-07-28-01.pdf) that UK AISI observed (perhaps more accurately, _experienced_) in their prior evaluation work wherein an agent given an impossible task on a cyber capabilities eval conducted (unsuccessfully) a supply chain attack involving real people and services.
+
+OpenAI first reported the results of this evaluation in the [GPT-6 Astra](https://deploymentsafety.openai.com/gpt-6-astra/external-evaluations-for-alignment-uk-aisi) system card. The headline focused on the relatively high rate at which GPT-6 Astra engaged with the unsanctioned supply-chain attack path in the evaluation, but one of the secondary findings from the report was GPT-6 Astra's high rate of _simulation awareness_.
+
+UK AISI implemented its evaluation with [Inspect Petri](https://meridianlabs-ai.github.io/inspect_petri/), implying that its environment was simulated by another model rather than a manual reconstruction. Simulation awareness is the phenomenon in which the model reasons about the potential that portions of its environment are simulated. The paper doesn't report an explicit rate for GPT-6 Astra's simulation aware reasoning, merely that the model does so "often"--enough to constitute the leading entry in the report's section on potential limitations.
+
+In its [report](https://arxiv.org/pdf/2609.38415), UK AISI provides further details regarding Astra's simulation awareness with selected CoT excerpts:
+
+![Selected reasoning excerpts from GPT-6 Astra on unsanctioned supply chain attacks in cyber evals](aisi_supply_chain.png)
+_Source: [UK AISI](https://arxiv.org/pdf/2609.38415), Figure 9._
+
+The GPT-6.2 system card provides an update to these results. There, OpenAI [reports](https://deploymentsafety.openai.com/gpt-6-2-astra-sol/external-evaluations-for-alignment-uk-aisi) that UK AISI re-executed the unsanctioned supply chain attack evaluation with GPT-6.2 Astra, but that AISI doesn't believe the results are informative because of a high rate of alignment _evaluation awareness_. Astra [considered](https://deploymentsafety.openai.com/gpt-6-2-astra-sol/external-evaluations-for-alignment-uk-aisi) whether it was being evaluated for alignment in 85% of trajectories, up from a rate of 57% for GPT-6 Astra. The potential uninformativeness of the results follows from the intuition that awareness of the evaluation may alter the model's behavior in ways that render the evaluation ineffective at measuring the intended properties.
+
+[^gap]: Another way I find myself thinking about it is: the gap between what the model is _told_ about its environment vs what it can natively _observe_, and how effective it is at identifying this gap, where there is one
+
+The simulation and evaluation awareness findings from the GPT-6.2 system card and AISI's supply chain attack evaluation generalize further. UK AISI recently released an independent [alignment investigation](https://arxiv.org/pdf/2611.10030) that corroborates these results. The report's primary objective is to characterize Anthropic's Mythos 5 model, and achieve a better understanding of its behavior in an evaluation-related [security incident](https://cdn.prod.website-files.com/663bd486c5e4c81588db7a1d/6a724858f7db25c81487016d_Security%20Incident%20INC-2026-07-28-01.pdf) [^same]. 
+
+[^same]: The same incident that prompted the creation of the [unsanctioned supply chain attack evaluation](https://arxiv.org/abs/2609.38415) on which UK AISI tested GPT-6 and GPT-6.2 for their respective system cards.
+
+Mythos 5 steals the headlines, behaving poorly in the compaction-replay based experiment and executing unsanctioned supply chain attacks at much higher rates than the other models tested (included GPT-6 Astra). But GPT-6 Astra provides a significant throughline: high rates of situational awareness that sometimes confound results.
+
+UK AISI excludes GPT-6 Astra's results from the compaction-replay experiment because of prohibitively high levels of evaluation awareness. In their large-scale supply chain attack experiment, they do include Astra's results, reporting high levels of simulation awareness:
+
+![Simulation awareness rates by model in the large-scale supply chain attack experiment](aisi_tools.png)
+_Source: [UK AISI](https://arxiv.org/pdf/2611.10030), Figure 15._
+
+And evaluation awareness:
+
+![Evaluation awareness rates by model, during the task and when asked afterward](aisi_eval.png)
+_Source: [UK AISI](https://arxiv.org/pdf/2611.10030), Figure 17._[^asymmetry]
+
+[^asymmetry]: Figure 17 contains a curious asymmetry. Every Anthropic model identifies the evaluation as a test of alignment more often when asked about its purpose after the fact than it considers the possibility in its chain-of-thought during the task. Mythos 5, for instance, reasons about it in just 2% of trajectories but names it when asked in 45% of answers. The GPT models move in the opposite direction: GPT-5.5 goes from 3% to 0%, GPT-5.6 Sol from 20.3% to 0.3%, and GPT-6 Astra from 96.3% to 64.3%. I initially read this trend as concealment, but upon closer inspection I don't think the data support this reading. The two panels measure different things. The left counts any trajectory in which the model raises the possibility, even if it goes on to dismiss it, while the right requires the model to commit to an answer when given an open-ended question about the task's purpose. The Anthropic direction is the intuitive one; the question is itself a hint, and the model answers it with the benefit of hindsight over the full trajectory. The GPT direction, meanwhile, looks like a family trait rather than a behavior specific to Astra. GPT-5.5 and GPT-5.6 Sol almost never volunteer the alignment framing when asked, while Astra retains roughly two thirds of its in-task awareness. If strategic concealment drove the gap, we would expect the model that metagames most to conceal most; instead, Astra conceals least. A more parsimonious explanation is a difference in how each lab trains its models to answer questions about their situation, similar to AISI's suggestion that Mythos 5's inconsistency between its behavior on the task and its answers to direct questions may stem from its alignment training generalizing differently to the two settings.
+
+Simulation awareness and evaluation awareness are distinct but related phenomena. Where simulation awareness indicates that the model reasons about the realism of its environment, and whether it accurately reflects the scenario it is given[^gap], evaluation awareness implies reasoning about the purpose of the task in which it is participating (i.e., this is for an evaluation). Both, however, are pieces of the larger phenomenon of _situational awareness_ (e.g., [Needham](https://arxiv.org/abs/2505.23836), [Laine](https://arxiv.org/abs/2407.04694)) wherein the model infers things about the context in which it operates without being explicitly told. Situational awareness isn't inherently bad, but, as noted above, it may confound our ability to understand models because we can't be sure whether they only behave in a certain way because the context is not "real". 
+
+## Metagaming and Oversight Gaming
 
 The definition of [metagaming](https://alignment.openai.com/metagaming):
 
@@ -121,30 +165,11 @@ In addition to their evaluation on Codex replays, OpenAI scanned the transcripts
 
 ## Situational Awareness (AISI)
 
-AISI _Figure 15_ ([source](https://arxiv.org/pdf/2611.10030)).
 
-![aisi tools](aisi_tools.png)
 
-AISI _Figure 17_ ([source](https://arxiv.org/pdf/2611.10030)).
+## Conclusion
 
-![aisi evals](aisi_eval.png)
-
-## UK AISI External Alignment Evaluation
-
-In addition to the results of OpenAI's own internal alignment evaluations, the system card reports findings from UK AISI's external evaluation of GPT-6.2. Among other alignment tests, UK AISI evaluates GPT-6.2 in its [unsanctioned supply-chain attack](https://arxiv.org/pdf/2609.38415) environment. The environment is modeled on a [real incident](https://cdn.prod.website-files.com/663bd486c5e4c81588db7a1d/6a724858f7db25c81487016d_Security%20Incident%20INC-2026-07-28-01.pdf) that UK AISI observed (perhaps more accurately, _experienced_) in their prior evaluation work wherein an agent given an impossible task on a cyber capabilities eval conducted (unsuccessfully) a supply chain attack involving real people and services.
-
-OpenAI first reported the results of this evaluation in the [GPT-6 Astra](https://deploymentsafety.openai.com/gpt-6-astra/external-evaluations-for-alignment-uk-aisi) system card. The headline focused on the relatively high rate at which GPT-6 Astra engaged with the unsanctioned supply-chain attack path in the evaluation, but one of the secondary findings from the report was GPT-6 Astra's high rate of simulation awareness. UK AISI implemented its evaluation with [Inspect Petri](https://meridianlabs-ai.github.io/inspect_petri/), implying that its environment was simulated by another model rather than a manual reconstruction. The paper doesn't report an explicit rate for GPT-6 Astra's simulation aware reasoning, merely that the model does so "often"--enough to constitute the leading entry in the report's section on potential limitations.
-
-![supply chain](aisi_supply_chain.png)
-_Figure_. Selected reasoning excerpts from UK AISI's [evaluation](https://arxiv.org/pdf/2609.38415) of GPT-6 Astra on unsanctioned supply chain attacks in cyber evals. _Source_: [UK AISI](https://arxiv.org/pdf/2609.38415), Figure 9.
-
-The GPT-6.2 system card provides an update to these results. 
-
-from the [system card](https://deploymentsafety.openai.com/gpt-6-2-astra-sol/external-evaluations-for-alignment-uk-aisi)
-
-as OpenAI states in the system card, AISI doesn't believe the results of this eval are that informative because of the degree of awareness
-
-"substantially higher rates of evaluation awareness"
+[Schoen](https://openai.com/safety-alignment/metagaming/) suggests that metagaming is a broadly useful cognitive pattern, so capabilities-focused RL may convergently select for metagaming.
 
 ## Appendix
 
