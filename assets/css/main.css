@@ -107,6 +107,17 @@ img, video {
   height: auto;
 }
 
+/* Figure with a source line: an image followed directly by an italic
+   caption in the same paragraph. Center both, caption on its own line. */
+p:has(> img + em) {
+  text-align: center;
+}
+
+p:has(> img + em) > img {
+  display: block;
+  margin: 0 auto;
+}
+
 table {
   border-collapse: collapse;
   width: 100%;
