@@ -14,7 +14,7 @@ Results indicating Astra's declining monitorability are accompanied by others ac
 
 Both properties undermine a premise that our evaluations rest on, namely that the behavior we observe on a task reflects how the model would behave outside of it. Taken together with the monitorability results, they suggest that Astra is not just harder to monitor, but generally harder to evaluate.
 
-The results I discuss in the sections that follow focus primarily on GPT-6.2 Astra, in particular the updates to relevant properties that it exhibits relative to GPT-6 Astra. Where evaluation results are not available for 6.2, I cite results for GPT-6 Astra instead. This means that my analysis covers two distinct models from different releases, but the trends I'm identifying still stand. 
+The results I discuss in the sections that follow focus primarily on GPT-6.2 Astra, in particular the updates to relevant properties that it exhibits relative to GPT-6 Astra. Where evaluation results are not available for 6.2, I cite results for GPT-6 Astra instead. This means that my analysis covers two distinct models from different releases, but I believe the trends I identify are robust to this confound. 
 
 ## Monitorability Updates for GPT-6.2 Astra
 
