@@ -388,3 +388,64 @@ sup {
     box-shadow: 0 4px 16px rgb(0 0 0 / 0.5);
   }
 }
+
+/* ------------------------------------------------------ table of contents */
+
+/* Fixed in the left margin beside the centered text column; only shown
+   when the viewport leaves room for it (column + sidebar on both sides). */
+.toc {
+  display: none;
+}
+
+@media (min-width: 80rem) {
+  .toc {
+    --toc-width: 14rem;
+    --toc-gap: 3rem;
+    display: block;
+    position: fixed;
+    top: 6.5rem;
+    left: calc(50% - var(--measure) / 2 - var(--toc-gap) - var(--toc-width));
+    width: var(--toc-width);
+    max-height: calc(100vh - 9rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+}
+
+.toc ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.toc ul ul a {
+  padding-left: 1.6rem;
+}
+
+.toc ul ul ul a {
+  padding-left: 2.4rem;
+}
+
+.toc a {
+  display: block;
+  padding: 0.3rem 0 0.3rem 0.8rem;
+  border-left: 2px solid var(--rule);
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.toc > nav > ul > li > a {
+  font-weight: 500;
+}
+
+.toc a:hover {
+  color: var(--fg);
+}
+
+.toc a.active {
+  color: var(--fg);
+  border-left-color: var(--fg);
+}

@@ -51,3 +51,9 @@ enableRobotsTXT = true
   section = ['html']
   taxonomy = ['html']
   term = ['html']
+
+# Sidebar table of contents on writing posts (layouts/_partials/toc.html).
+[markup.tableOfContents]
+  startLevel = 2
+  endLevel = 4
+  ordered = false

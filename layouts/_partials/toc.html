@@ -1,0 +1,25 @@
+{{- /*
+  Sidebar table of contents for writing posts: h2-h4 (levels set under
+  [markup.tableOfContents] in hugo.toml). Shown in the left margin on wide
+  screens, hidden otherwise. Opt out per post with `toc = false`.
+*/}}
+{{- if and (eq .Section "writing") (ne .Params.toc false) }}
+  {{- $toc := .TableOfContents }}
+  {{- if strings.Contains $toc "<li" }}
+    <aside class="toc" aria-label="Contents">
+      {{ $toc }}
+    </aside>
+    {{- with resources.Get "js/toc.js" }}
+      {{- $opts := dict "minify" (not hugo.IsDevelopment) }}
+      {{- with . | js.Build $opts }}
+        {{- if hugo.IsDevelopment }}
+          <script src="{{ .RelPermalink }}" defer></script>
+        {{- else }}
+          {{- with . | fingerprint }}
+            <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>
+          {{- end }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
